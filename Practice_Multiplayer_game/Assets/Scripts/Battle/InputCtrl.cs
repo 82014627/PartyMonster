@@ -16,9 +16,9 @@ public class InputCtrl : MonoBehaviour
     bool isactive = true;
     bool first = false;
 
-    public bool isMouse0 = true;
-    public bool isQ = true;
-    public bool isE = true;
+    public bool isJ = true;
+    public bool isK = true;
+    public bool isL = true;
     //只需要監聽用戶的按鍵 然後發送網路消息就可以了
     PlayerCtrl playerCtrl;
     public void Init(PlayerCtrl playerCtrl)
@@ -27,23 +27,23 @@ public class InputCtrl : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && isQ == true && playerCtrl.playerFSM.currentState != FSMState.Skill && playerCtrl.playerFSM.currentState != FSMState.GetHit)
+        if (Input.GetKeyDown(KeyCode.K) && isK == true && playerCtrl.playerFSM.currentState != FSMState.Skill && playerCtrl.playerFSM.currentState != FSMState.GetHit)
         {
-            SendInputCMD(KeyCode.Q);
-            playerCtrl.skillManager.DoCooling(KeyCode.Q);
-            isQ = false;
+            SendInputCMD(KeyCode.K);
+            playerCtrl.skillManager.DoCooling(KeyCode.K);
+            isK = false;
         }
-        else if (Input.GetKeyDown(KeyCode.E) && isE == true && playerCtrl.playerFSM.currentState != FSMState.Skill && playerCtrl.playerFSM.currentState != FSMState.GetHit)
+        else if (Input.GetKeyDown(KeyCode.L) && isL == true && playerCtrl.playerFSM.currentState != FSMState.Skill && playerCtrl.playerFSM.currentState != FSMState.GetHit)
         {
-            SendInputCMD(KeyCode.E);
-            playerCtrl.skillManager.DoCooling(KeyCode.E);
-            isE = false;
+            SendInputCMD(KeyCode.L);
+            playerCtrl.skillManager.DoCooling(KeyCode.L);
+            isL = false;
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse0) && isMouse0 == true && playerCtrl.playerFSM.currentState != FSMState.Skill && playerCtrl.playerFSM.currentState != FSMState.GetHit)
+        else if (Input.GetKeyDown(KeyCode.J) && isJ == true && playerCtrl.playerFSM.currentState != FSMState.Skill && playerCtrl.playerFSM.currentState != FSMState.GetHit)
         {
-            SendInputCMD(KeyCode.Mouse0);
-            playerCtrl.skillManager.DoCooling(KeyCode.Mouse0);
-            isMouse0 = false;
+            SendInputCMD(KeyCode.J);
+            playerCtrl.skillManager.DoCooling(KeyCode.J);
+            isJ = false;
         }
     }
     private void FixedUpdate()
@@ -82,7 +82,7 @@ public class InputCtrl : MonoBehaviour
                 first = true;
             }
         }
-        if (playerCtrl.isJump == true)
+        if (playerCtrl.isJump == true && playerCtrl.playerFSM.currentState != FSMState.Skill && playerCtrl.playerFSM.currentState != FSMState.GetHit)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {

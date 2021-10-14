@@ -12,6 +12,7 @@ using UnityEngine.UI;
 
 public class BattleWindow : BaseWindow
 {
+    public bool isOver;
     public BattleWindow()
     {
         selfType = WindowType.BattleWindow;
@@ -20,6 +21,7 @@ public class BattleWindow : BaseWindow
         resName = "UI/Windows/BattleWindow";
     }
     CancellationTokenSource ct;
+    CancellationTokenSource deadct;
     int int_level = 0;
     int int_coin = 0;
     public override void Update(float deltaTime)
@@ -40,64 +42,84 @@ public class BattleWindow : BaseWindow
         }
         if (time <= 0)
         {
-            reciprocal.gameObject.SetActive(false);
             Time.timeScale = 0;
-            TimeOver();
+            if (isOver == false)
+            {
+                TimeOver();
+                isOver = true;
+            }
         }
-        Skill(Mouse0, KeyCode.Mouse0);
-        Skill(Q, KeyCode.Q);
-        Skill(E, KeyCode.E);
+        Skill(J, KeyCode.J);
+        Skill(K, KeyCode.K);
+        Skill(L, KeyCode.L);
         AScore.text = A_score.ToString();
         BScore.text = B_score.ToString();
     }
-    void TimeOver()
+    async void TimeOver() //遊戲結束處理
     {
+        Camera.main.transform.position = new Vector3(-9.6f, 4.45f, -10);
+        Camera.main.orthographicSize = 2.5f;
+        playerCtrl.transform.position = new Vector3(-10, 0.6f, 2);
+        playerCtrl.transform.eulerAngles = new Vector3(0, 180, 0);
         if (A_score > B_score)
         {
-            if (playerInfo.TeamID == 0)
+            if (playerInfo.TeamID == 0) //贏
             {
+                reciprocal.text = "Win!";
                 int_level = 2;
                 int_coin = 100;
-                Win.SetActive(true);
+                Win.SetActive(true);        
+                playerCtrl.animatorManager.Play(PlayerAnimationClip.victory);
             }
-            else
+            else //輸
             {
+                reciprocal.text = "Lose...";
                 int_level = 1;
                 int_coin = 50;
                 Lose.SetActive(true);
+                playerCtrl.animatorManager.Play(PlayerAnimationClip.die);
             }
         }
         else if (A_score < B_score)
         {
-            if (playerInfo.TeamID == 0)
+            if (playerInfo.TeamID == 0) //輸
             {
+                reciprocal.text = "Lose...";
                 int_level = 1;
                 int_coin = 50;
                 Lose.SetActive(true);
+                playerCtrl.animatorManager.Play(PlayerAnimationClip.die);
             }
-            else
+            else //贏
             {
+                reciprocal.text = "Win!";
                 int_level = 2;
                 int_coin = 100;
                 Win.SetActive(true);
+                playerCtrl.animatorManager.Play(PlayerAnimationClip.victory);
             }
         }
         else
         {
+            reciprocal.text = "Tie...";
             int_level = 1;
             int_coin = 50;
             Tie.SetActive(true);
+            playerCtrl.animatorManager.Play(PlayerAnimationClip.die);
         }
         LevelText.text = (RolesCtrl.Instance.GetRolesInfo().Level + int_level).ToString();
         CoinText.text = (RolesCtrl.Instance.GetRolesInfo().GoldCoin + int_coin).ToString();
         damageText.text = BattleCtrl.Instance.GetDamage(playerInfo.RolesInfo.RolesID).ToString();
         KillsText.text = BattleCtrl.Instance.GetKills(playerInfo.RolesInfo.RolesID).ToString();
+        await Task.Delay(2500);
+        reciprocal.gameObject.SetActive(false);
         WinSreen.SetActive(true);
     }
-    Image Mouse0, backMouse0, Q, backQ, E, backE;
-    Text MouseName, QName, EName, AScore, BScore, Min, tenSec, Sec, reciprocal, LevelText, CoinText, damageText, KillsText;
-    GameObject WinSreen,Win,Lose,Tie;
+    Image J, backJ, K, backK, L, backL;
+    Text JName, KName, LName, AScore, BScore, Min, tenSec, Sec, reciprocal, LevelText, CoinText, damageText, KillsText,deadText;
+    GameObject WinSreen,Win,Lose,Tie,deadSecond;
     int time;
+    int deadTime;
     public int A_score, B_score;
     PlayerInfo playerInfo;
     PlayerCtrl playerCtrl;//自己本地的
@@ -105,29 +127,33 @@ public class BattleWindow : BaseWindow
     protected override void Awake()
     {
         base.Awake();
-        time = 300;
+        isOver = false;
+        A_score = 0;
+        B_score = 0;
+        time = 60;
+        deadTime = 10;
         playerCtrl = RoomCtrl.Instance.GetSelfPlayerCtrl();
         playerInfo = playerCtrl.PlayerInfo;
         inputCtrl = GameObject.Find("BattleManager").GetComponent<InputCtrl>();
 
-        Mouse0 = transform.Find("左鍵底圖/Mouse0").GetComponent<Image>();
-        backMouse0 = transform.Find("左鍵底圖").GetComponent<Image>();
-        Mouse0.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "Mouse0");
-        backMouse0.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "Mouse0");
-        Q = transform.Find("Q底圖/Q").GetComponent<Image>();
-        backQ = transform.Find("Q底圖").GetComponent<Image>();
-        Q.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "Q");
-        backQ.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "Q");
-        E = transform.Find("E底圖/E").GetComponent<Image>();
-        backE = transform.Find("E底圖").GetComponent<Image>();
-        E.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "E");
-        backE.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "E");
-        MouseName = transform.Find("左鍵底圖/MouseName").GetComponent<Text>();
-        MouseName.text = AllSkillConfig.GetInstance(HeroSkillConfig.GetInstance(playerInfo.HeroID).Att_ID).SkillName;
-        QName = transform.Find("Q底圖/QName").GetComponent<Text>();
-        QName.text = AllSkillConfig.GetInstance(HeroSkillConfig.GetInstance(playerInfo.HeroID).Skill1_ID).SkillName;
-        EName = transform.Find("E底圖/EName").GetComponent<Text>();
-        EName.text = AllSkillConfig.GetInstance(HeroSkillConfig.GetInstance(playerInfo.HeroID).Skill2_ID).SkillName;
+        J = transform.Find("J底圖/J").GetComponent<Image>();
+        backJ = transform.Find("J底圖").GetComponent<Image>();
+        J.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "J");
+        backJ.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "J");
+        K = transform.Find("K底圖/K").GetComponent<Image>();
+        backK = transform.Find("K底圖").GetComponent<Image>();
+        K.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "K");
+        backK.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "K");
+        L = transform.Find("L底圖/L").GetComponent<Image>();
+        backL = transform.Find("L底圖").GetComponent<Image>();
+        L.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "L");
+        backL.sprite = ResManager.Instance.LoadSkillIcon(playerCtrl.PlayerInfo.HeroID, "L");
+        JName = transform.Find("J底圖/JName").GetComponent<Text>();
+        JName.text = AllSkillConfig.GetInstance(HeroSkillConfig.GetInstance(playerInfo.HeroID).Att_ID).SkillName;
+        KName = transform.Find("K底圖/KName").GetComponent<Text>();
+        KName.text = AllSkillConfig.GetInstance(HeroSkillConfig.GetInstance(playerInfo.HeroID).Skill1_ID).SkillName;
+        LName = transform.Find("L底圖/LName").GetComponent<Text>();
+        LName.text = AllSkillConfig.GetInstance(HeroSkillConfig.GetInstance(playerInfo.HeroID).Skill2_ID).SkillName;
         AScore = transform.Find("記分板/A").GetComponent<Text>();
         BScore = transform.Find("記分板/B").GetComponent<Text>();
         Min = transform.Find("記分板/時間/1分").GetComponent<Text>();
@@ -142,7 +168,10 @@ public class BattleWindow : BaseWindow
         Win = transform.Find("結算畫面/Win").gameObject;
         Lose = transform.Find("結算畫面/Lose").gameObject;
         Tie = transform.Find("結算畫面/Tie").gameObject;
+        deadSecond = transform.Find("死亡倒數BG").gameObject;
+        deadText = transform.Find("死亡倒數BG/Text").GetComponent<Text>();
         ct = new CancellationTokenSource();
+        deadct = new CancellationTokenSource();
         TimeDown();
     }
 
@@ -163,37 +192,68 @@ public class BattleWindow : BaseWindow
             }
         }
     }
-    void Skill(Image image,KeyCode key)
+    public void DeadHandle()
+    {
+        deadSecond.SetActive(true);
+        DeadTimeDown(); 
+    }
+
+    async void DeadTimeDown()
+    {
+        while (deadTime > 0)
+        {
+            await Task.Delay(1000); //每隔一秒
+            if (!deadct.IsCancellationRequested)
+            {
+                deadTime -= 1;
+                deadText.text = deadTime.ToString();
+            }
+        }
+        if (isOver == true)
+        {
+            deadSecond.SetActive(false);
+            deadTime = 10;
+            playerCtrl.isDead = false;
+            return;
+        }
+        if (deadTime <= 0)
+        {
+            deadSecond.SetActive(false);
+            deadTime = 10;
+            playerCtrl.isDead = false;
+        }
+    }
+    void Skill(Image image,KeyCode key) //計算技能CD
     {
         switch (key)
         {
-            case KeyCode.Mouse0:
-                if (inputCtrl.isMouse0 == false)
+            case KeyCode.J:
+                if (inputCtrl.isJ == false)
                 {
                     image.fillAmount = playerCtrl.skillManager.SurplusTime(key) / playerCtrl.skillManager.coolingConfig[key];
                     if (image.fillAmount == 1)
                     {
-                        inputCtrl.isMouse0 = true;
+                        inputCtrl.isJ = true;
                     }
                 }
                 break;
-            case KeyCode.Q:
-                if (inputCtrl.isQ == false)
+            case KeyCode.K:
+                if (inputCtrl.isK == false)
                 {
                     image.fillAmount = playerCtrl.skillManager.SurplusTime(key) / playerCtrl.skillManager.coolingConfig[key];
                     if (image.fillAmount == 1)
                     {
-                        inputCtrl.isQ = true;
+                        inputCtrl.isK = true;
                     }
                 }
                 break;
-            case KeyCode.E:
-                if (inputCtrl.isE == false)
+            case KeyCode.L:
+                if (inputCtrl.isL == false)
                 {
                     image.fillAmount = playerCtrl.skillManager.SurplusTime(key) / playerCtrl.skillManager.coolingConfig[key];
                     if (image.fillAmount == 1)
                     {
-                        inputCtrl.isE = true;
+                        inputCtrl.isL = true;
                     }
                 }
                 break;
@@ -210,6 +270,7 @@ public class BattleWindow : BaseWindow
     {
         base.OnDisable();
         ct.Cancel();
+        deadct.Cancel();
     }
 
     protected override void OnEnable()
@@ -240,6 +301,7 @@ public class BattleWindow : BaseWindow
 
     private void EnterOKBtnOnClick()
     {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
         Time.timeScale = 1;
 
         RolesInfo rolesInfo = RolesCtrl.Instance.GetRolesInfo();
@@ -250,8 +312,8 @@ public class BattleWindow : BaseWindow
 
         BattleListener.Instance.Release();
         BattleModel.Instance.Clear();
-        Close();
         WindowManager.Instance.OpenWindow(WindowType.LobbyWindow);
         SceneManager.LoadScene("Lobby");
+        Close();
     }
 }

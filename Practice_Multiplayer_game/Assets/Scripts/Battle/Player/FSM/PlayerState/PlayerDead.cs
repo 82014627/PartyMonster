@@ -20,7 +20,14 @@ public class PlayerDead : EntityFSM
 
     public override void Enter()
     {
-        base.Enter();      
+        base.Enter();
+        fsm.playerCtrl.isDead = true;
+        if (fsm.playerCtrl.isSelf == true)
+        {
+            BattleWindow battleWindow = (BattleWindow)WindowManager.Instance.GetWindow(WindowType.BattleWindow);
+            battleWindow.DeadHandle();
+        }
+        GameObject.Find("BattleAudioManager").GetComponent<BattleAudioManager>().Dead();
         fsm.playerCtrl.transform.GetComponent<BoxCollider>().enabled = false;
         fsm.playerCtrl.animatorManager.Play(PlayerAnimationClip.die);
         //進入到復活狀態
@@ -54,14 +61,6 @@ public class PlayerDead : EntityFSM
     public override void Update()
     {
         base.Update();
-        //if (fsm.playerCtrl.isJump == true)
-        //{
-        //    fsm.playerCtrl.transform.GetComponent<Rigidbody>().useGravity = false;
-        //}
-        //else
-        //{
-        //    fsm.playerCtrl.transform.GetComponent<Rigidbody>().useGravity = true;
-        //}
     }
     public override void HandleMoveEvent(byte[] data)
     {

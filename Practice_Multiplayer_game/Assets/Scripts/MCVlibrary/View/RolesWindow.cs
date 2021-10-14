@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RolesWindow : BaseWindow
@@ -44,7 +45,8 @@ public class RolesWindow : BaseWindow
             RolesCtrl.Instance.SaveRolesInfo(s2cMSG.RolesInfo);
             //關閉當前這個窗口
             Close();
-            //打開大廳窗口
+            //載入新手教學
+            //SceneManager.LoadScene("Teach");
             WindowManager.Instance.OpenWindow(WindowType.LobbyWindow);
         }
         else
@@ -89,6 +91,7 @@ public class RolesWindow : BaseWindow
 
     private void EnterOKBtnOnClick()
     {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
         RolesCreateC2S c2sMSG = new RolesCreateC2S();
         c2sMSG.NickName = nickName_inputField.text;
 

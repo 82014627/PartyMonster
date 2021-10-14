@@ -178,6 +178,8 @@ public enum WindowType
     StoreWindow,
     TipsWindow,
     RoomWindow,
+    CharacterWindow,
+    TeachWindow,
 }
 
 /// <summary>

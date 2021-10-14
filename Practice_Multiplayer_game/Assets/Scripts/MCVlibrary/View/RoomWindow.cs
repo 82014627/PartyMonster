@@ -50,7 +50,7 @@ public class RoomWindow : BaseWindow
         BattleListener.Instance.Init();
         isLock = false;
         lockHeroID = 0;
-        time = 30;
+        time = 20;
         rolesDic = new Dictionary<int, GameObject>();
         playerLoadDic = new Dictionary<int, GameObject>();
 
@@ -61,14 +61,15 @@ public class RoomWindow : BaseWindow
         ChatVertical = transform.Find("ChatBar/Scrollbar Vertical").GetComponent<Scrollbar>();
         ChatInput = transform.Find("Chat_Input").GetComponent<InputField>();
 
-        ct = new CancellationTokenSource();
-        TimeDown();
-
         RoomInfo roomInfo = RolesCtrl.Instance.GetRoomInfo();
 
         for (int i = 0; i < roomInfo.TeamA.Count; i++)
         {
             GameObject go = GameObject.Instantiate(TeamA_Player.gameObject, TeamA_Player.parent, false);
+            if (i == 1)
+            {
+                go.transform.position += new Vector3(0, -137, 0);
+            }
             go.transform.Find("NickName").GetComponent<Text>().text = roomInfo.TeamA[i].NickName;
             go.gameObject.SetActive(true);
             rolesDic[roomInfo.TeamA[i].RolesID] = go;
@@ -76,10 +77,17 @@ public class RoomWindow : BaseWindow
         for (int i = 0; i < roomInfo.TeamB.Count; i++)
         {
             GameObject go = GameObject.Instantiate(TeamB_Player.gameObject, TeamB_Player.parent, false);
+            if (i == 1)
+            {
+                go.transform.position += new Vector3(0, -137, 0);
+            }
             go.transform.Find("NickName").GetComponent<Text>().text = roomInfo.TeamB[i].NickName;
             go.gameObject.SetActive(true);
             rolesDic[roomInfo.TeamB[i].RolesID] = go;
         }
+
+        ct = new CancellationTokenSource();
+        TimeDown();
     }
 
     async void TimeDown()
@@ -123,11 +131,27 @@ public class RoomWindow : BaseWindow
             if (s2cMSG.PlayerList[i].TeamID == 0)
             {
                 go = GameObject.Instantiate(TeamALoad_Player.gameObject, TeamALoad_Player.parent, false);
+                if (i == 0)
+                {
+                    go.transform.position += new Vector3(-150, 0, 0);
+                }
+                else if (i == 1)
+                {
+                    go.transform.position += new Vector3(150, 0, 0);
+                }
             }
             //B隊伍
             else
             {
                 go = GameObject.Instantiate(TeamBLoad_Player.gameObject, TeamBLoad_Player.parent, false);
+                if (i == 2)
+                {
+                    go.transform.position += new Vector3(-150, 0, 0);
+                }
+                else if (i == 3)
+                {
+                    go.transform.position += new Vector3(150, 0, 0);
+                }
             }
             go.transform.Find("Hero_head").GetComponent<Image>().sprite 
                 = ResManager.Instance.LoadRoundHead(s2cMSG.PlayerList[i].HeroID);
@@ -166,7 +190,6 @@ public class RoomWindow : BaseWindow
         RoomLoadProgressS2C s2cMSG = ProtobufHelper.FromBytes<RoomLoadProgressS2C>(response.proto);
         if (s2cMSG.IsBattleStart == true)
         {
-            ct.Cancel();
             for (int i = 0; i < s2cMSG.RolesID.Count; i++)
             {
                 playerLoadDic[s2cMSG.RolesID[i]].transform.Find("Progress").GetComponent<Text>().text = "100%";
@@ -210,9 +233,10 @@ public class RoomWindow : BaseWindow
     private void HandleRoomCloseS2C(BufferEntity response)
     {
         RoomCloseS2C s2cMSG = ProtobufHelper.FromBytes<RoomCloseS2C>(response.proto);
-        Close();
         RoomCtrl.Instance.RemoveRoomInfo();
+        BattleListener.Instance.Release();
         WindowManager.Instance.OpenWindow(WindowType.LobbyWindow);
+        Close();
     }
 
     private void HandleRoomSelectHeroS2C(BufferEntity response)
@@ -283,6 +307,7 @@ public class RoomWindow : BaseWindow
                 case "LockBtn":
                     buttonList[i].onClick.AddListener(() =>
                     {
+                        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
                         if (isLock == false)
                         {
                             if (lockHeroID == 0)
@@ -309,6 +334,7 @@ public class RoomWindow : BaseWindow
     {
         button.onClick.AddListener(() =>
         {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
             if (isLock == false)
             {
                 BufferFactory.CreateAndSendPackage(1400, new RoomSelectHeroC2S()

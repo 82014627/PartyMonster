@@ -23,14 +23,24 @@ namespace Game.View
         public override void Update(float deltaTime)
         {
             base.Update(deltaTime);
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                isIPOpen = !isIPOpen;
+                IP.SetActive(isIPOpen);
+            }
         }
         InputField AccountInput;
         InputField PwdInput;
+        InputField IP_InputField;
+        GameObject IP;
+        bool isIPOpen = false;
         protected override void Awake()
         {
             base.Awake();
             AccountInput = transform.Find("UserBack/AccountInput").GetComponent<InputField>();
             PwdInput = transform.Find("UserBack/pwdInput").GetComponent<InputField>();
+            IP_InputField = transform.Find("IP/IP_InputField").GetComponent<InputField>();
+            IP = transform.Find("IP").gameObject;
         }
 
         protected override void OnAddListener()
@@ -53,6 +63,7 @@ namespace Game.View
                     if (s2cMSG.RolesInfo != null)
                     {
                         LoginCtrl.Instance.SaveRolesInfo(s2cMSG.RolesInfo);//保存角色數據
+                        SceneManagers.LoginToLobby();
                         WindowManager.Instance.OpenWindow(WindowType.LobbyWindow);//打開大廳介面
                     }
                     else
@@ -129,6 +140,9 @@ namespace Game.View
                     case "login_button":
                         buttonList[i].onClick.AddListener(LoginBtnOnClick);
                         break;
+                    case "OkBtn":
+                        buttonList[i].onClick.AddListener(OkBtnOnClick);
+                        break;
                     default:
                         break;
                 }
@@ -136,8 +150,18 @@ namespace Game.View
 
         }
 
+        private void OkBtnOnClick()
+        {
+            if (IP_InputField.text != null)
+            {
+                GameManager.uSocket.ip = IP_InputField.text;
+                GameObject.Find("GameManager").GetComponent<GameManager>().NewUsocket();
+            }
+        }
+
         private void LoginBtnOnClick()
         {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
             if (string.IsNullOrEmpty(AccountInput.text))
             {
                 Debug.Log("帳號不可為空");
@@ -160,6 +184,7 @@ namespace Game.View
 
         private void RegisterBtnOnClick()
         {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
             if (string.IsNullOrEmpty(AccountInput.text))
             {
                 Debug.Log("帳號不可為空");

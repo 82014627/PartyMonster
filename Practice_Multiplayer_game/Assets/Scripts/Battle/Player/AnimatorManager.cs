@@ -43,23 +43,63 @@ public class AnimatorManager : MonoBehaviour
             animator.SetBool(clip[i], false);
         }
     }
-
-    //Q事件
-    public void DoSkillQEvent()
+    void EffectAudio(string Key)
     {
-        SpawnEffect("Q");
+        int keycode = 0;
+        if (Key == "J")
+        {
+            keycode = 0;
+        }
+        else if (Key == "K")
+        {
+            keycode = 1;
+        }
+        else if (Key == "L")
+        {
+            keycode = 2;
+        }
+        
+        BattleAudioManager audioManager = GameObject.Find("BattleAudioManager").GetComponent<BattleAudioManager>();
+        switch (playerInfo.HeroID)
+        {
+            case 1001:
+                audioManager.audioSource.PlayOneShot(audioManager.HeroClips[1001][keycode]);
+                break;
+            case 1002:
+                audioManager.audioSource.PlayOneShot(audioManager.HeroClips[1002][keycode]);
+                break;
+            case 1003:
+                audioManager.audioSource.PlayOneShot(audioManager.HeroClips[1003][keycode]);
+                break;
+            case 1004:
+                audioManager.audioSource.PlayOneShot(audioManager.HeroClips[1004][keycode]);
+                break;
+            case 1005:
+                audioManager.audioSource.PlayOneShot(audioManager.HeroClips[1005][keycode]);
+                break;
+            default:
+                break;
+        }
+    }
+    //Q事件
+    public void DoSkillKEvent()
+    {
+        SpawnEffect("K");
+        EffectAudio("K");
     }
 
     //E
-    public void DoSkillEEvent()
+    public void DoSkillLEvent()
     {
-        SpawnEffect("E");
+        SpawnEffect("L");
+        EffectAudio("L");
     }
 
     //Mouse0
-    public void DoSkillMouse0Event()
+    public void DoSkillJEvent()
     {
-        SpawnEffect("Mouse0");
+        SpawnEffect("J");
+        EffectAudio("J");
     }
 
     EConfig eConfig;
@@ -142,11 +182,11 @@ public class AnimatorManager : MonoBehaviour
             case 100400:
                 if (this.transform.eulerAngles.y > 90)
                 {
-                    effect.transform.position = transform.position + new Vector3(-1f, 0.5f, 0);
+                    effect.transform.position = transform.position + new Vector3(-1.2f, 0.5f, 0);
                 }
                 else
                 {
-                    effect.transform.position = transform.position + new Vector3(1f, 0.5f, 0);
+                    effect.transform.position = transform.position + new Vector3(1.2f, 0.5f, 0);
                 }
                 break;
             case 100401:

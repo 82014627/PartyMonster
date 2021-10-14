@@ -18,6 +18,8 @@ public class WindowManager : MonoSingleton<WindowManager>
         windowDic.Add(WindowType.LobbyWindow, new LobbyWindow());
         windowDic.Add(WindowType.RoomWindow, new RoomWindow());
         windowDic.Add(WindowType.BattleWindow, new BattleWindow());
+        windowDic.Add(WindowType.CharacterWindow, new CharacterWindow());
+        windowDic.Add(WindowType.TeachWindow, new TeachWindow());
     }
     public void Update()
     {

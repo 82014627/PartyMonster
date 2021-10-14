@@ -30,15 +30,15 @@ public class PlayerIdle : EntityFSM
     public override void HandleCMD(BattleUserInputS2C s2cMSG)
     {
         base.HandleCMD(s2cMSG);
-        if (s2cMSG.CMD.Key == KeyCode.Q.GetHashCode())
+        if (s2cMSG.CMD.Key == KeyCode.K.GetHashCode())
         {
             HandleSkillEvent(s2cMSG);
         }
-        else if (s2cMSG.CMD.Key == KeyCode.E.GetHashCode())
+        else if (s2cMSG.CMD.Key == KeyCode.L.GetHashCode())
         {
             HandleSkillEvent(s2cMSG);
         }
-        else if (s2cMSG.CMD.Key == KeyCode.Mouse0.GetHashCode())
+        else if (s2cMSG.CMD.Key == KeyCode.J.GetHashCode())
         {
             //普通攻擊
             HandleSkillEvent(s2cMSG);

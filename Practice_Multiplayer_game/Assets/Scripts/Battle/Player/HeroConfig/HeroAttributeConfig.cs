@@ -18,7 +18,7 @@ public class HeroAttributeConfig
        HeroAttributeEntity0.HP = 750f;
        HeroAttributeEntity0.Power = 1.3f;
        HeroAttributeEntity0.Armor = 1.2f;
-       HeroAttributeEntity0.AttackSpeed = 2f;
+       HeroAttributeEntity0.AttackSpeed = 1.4f;
        HeroAttributeEntity0.MoveSpeed = 14f;//718.5
 
         if (!entityDic.ContainsKey(HeroAttributeEntity0.ID))

@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
         //打開登入介面
         WindowManager.Instance.OpenWindow(WindowType.LoginWindow);
     }
+    public void NewUsocket()
+    {
+        uSocket = new USocket(DispatchNetEvent);
+    }
     void Update()
     {
         if (uSocket != null)

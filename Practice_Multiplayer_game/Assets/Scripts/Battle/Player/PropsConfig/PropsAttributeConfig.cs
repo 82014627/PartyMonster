@@ -67,7 +67,7 @@ public class PropsAttributeConfig
        PropsAttributeEntity4.PropsID = 105;
        PropsAttributeEntity4.PropsName = @"地雷";
        PropsAttributeEntity4.Props_Illustrate = @"踩到的玩家會損失100點的血量";
-       PropsAttributeEntity4.Effect_Value = 100;
+       PropsAttributeEntity4.Effect_Value = 50;
        PropsAttributeEntity4.DelayDestroy = 12;
        PropsAttributeEntity4.Probability = 0.35f;
 

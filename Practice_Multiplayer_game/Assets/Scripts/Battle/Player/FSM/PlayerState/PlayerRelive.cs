@@ -23,7 +23,7 @@ public class PlayerRelive : EntityFSM
     }
     private async void Quit()
     {
-        await Task.Delay(5000);
+        await Task.Delay(8000);
         //復活狀態
         fsm.playerCtrl.Relive();
         fsm.ToNext(FSMState.Idle);

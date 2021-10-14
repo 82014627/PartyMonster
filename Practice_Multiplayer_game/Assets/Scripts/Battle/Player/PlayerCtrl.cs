@@ -20,13 +20,14 @@ public class PlayerCtrl : MonoBehaviour
     public GameObject hud;
     public bool isJump = false;
     public bool isInvincible = false;
+    public bool isDead = false;
     public void Relive()
     {
+        isDead = false;
         this.gameObject.SetActive(true);
         hud.SetActive(true);
         this.transform.position = spawnPosition;
         this.transform.eulerAngles = spawnRotation;
-        //this.transform.GetComponent<Rigidbody>().useGravity = true;
         this.transform.GetComponent<BoxCollider>().enabled = true;       
         currentAttribute.HP = totalAttribute.HP;
         HudUpdate();
@@ -38,7 +39,57 @@ public class PlayerCtrl : MonoBehaviour
     public AnimatorManager animatorManager;
     public PlayerFSM playerFSM;
     public InputCtrl inputCtrl;
+    //public bool isTeach = false;
+    //public int HeroID;
+    //private void Start()
+    //{
+    //    if (isTeach == true)
+    //    {
+    //        PlayerInfo = new PlayerInfo();
+    //        PlayerInfo.RolesInfo.RoomID = 0;
+    //        if (HeroID == 1001)
+    //        {
+    //            PlayerInfo.TeamID = 0;
+    //        }
+    //        else if (HeroID == 1002)
+    //        {
+    //            PlayerInfo.TeamID = 1;
+    //        }
+    //        //復活時會用到
+    //        spawnPosition = transform.position;
+    //        spawnRotation = transform.eulerAngles;
 
+    //        //獲取他的屬性 當前屬性 還有總的屬性
+    //        currentAttribute = HeroAttributeConfig.GetInstance(HeroID);
+    //        totalAttribute = HeroAttributeConfig.GetInstance(HeroID);
+
+    //        RoomModel.Instance.SaveHeroAttribute(0, currentAttribute, totalAttribute);
+
+    //        //人物的HUD 血條 藍條 暱稱 等級
+    //        hud = ResManager.Instance.LoadHUD();
+    //        hud.transform.position = transform.position;
+    //        hud.transform.eulerAngles = Camera.main.transform.eulerAngles;
+    //        hpFill = hud.transform.Find("Hero_Head/HPBG/HP").GetComponent<Image>();
+    //        NickName = hud.transform.Find("Hero_Head/NickName").GetComponent<Text>();
+    //        HurtText = hud.transform.Find("Hero_Head/HurtText").GetComponent<Text>();
+    //        HudUpdate(true);
+    //        //技能管理器
+    //        skillManager = this.gameObject.AddComponent<SkillManager>();
+    //        skillManager.Init(this);
+    //        //動畫管理器
+    //        animatorManager = this.gameObject.AddComponent<AnimatorManager>();
+    //        animatorManager.Init(this);
+    //        //角色的狀態機
+    //        playerFSM = this.gameObject.AddComponent<PlayerFSM>();
+    //        playerFSM.Init(this);
+    //        //輸入控制器
+    //        inputCtrl = GameObject.Find("BattleManager").GetComponent<InputCtrl>();
+    //        if (isSelf)
+    //        {
+    //            inputCtrl.Init(this);
+    //        }
+    //    }
+    //}
     internal void Init(PlayerInfo playerInfo)
     {
         this.PlayerInfo = playerInfo;
@@ -85,6 +136,18 @@ public class PlayerCtrl : MonoBehaviour
         {
             NickName.color = Color.blue;
         }
+        //if (HeroID == 1001)
+        //{
+        //    NickName.text = "You";
+        //}
+        //else if (HeroID == 1002)
+        //{
+        //    NickName.text = "Enemy";
+        //}
+        //else
+        //{
+        //    NickName.text = PlayerInfo.RolesInfo.NickName;
+        //}
         NickName.text = PlayerInfo.RolesInfo.NickName;
         if (init == true)
         {
@@ -131,6 +194,18 @@ public class PlayerCtrl : MonoBehaviour
     //Vector3 cameraOffset = new Vector3(3.74f, 1.6f, 0);
     public void LateUpdate()
     {
+        if (transform.position.x < 2 || transform.position.y < -2 || transform.position.x > 23 || transform.position.y < -2)
+        {
+            if (isSelf == true && isDead == false)
+            {
+                BattleWindow battleWindow = (BattleWindow)WindowManager.Instance.GetWindow(WindowType.BattleWindow);
+                if (battleWindow.isOver == false)
+                {
+                    inputCtrl.SendHudInputC2S(1000, 0);
+                    isDead = true;
+                }
+            }
+        }
         if (hud != null)
         {
             hud.transform.position = transform.position + new Vector3(0, 0.3f, -2);
@@ -222,6 +297,10 @@ public class PlayerCtrl : MonoBehaviour
         if (other.GetComponent<PConfig>())
         {
             PConfig pConfig = other.GetComponent<PConfig>();
+            if (pConfig.PropsID == 105)
+            {
+                return;
+            }
             GameObject effect = ResManager.Instance.LoadPropsEffect(pConfig.PropsID, transform.position);
             PConfig pConfig1 = effect.GetComponent<PConfig>();
             pConfig1.playerCtrl = this;
@@ -261,12 +340,11 @@ public class PlayerCtrl : MonoBehaviour
     /// <param name="hurt"></param>
     public void OnSkillHit(int demage)
     {
-        //Debug.LogError($"攻擊傷害:{hurt} 防禦值:{currentAttribute.Armor} 造成傷害:{demage} ");       
+        Debug.LogError($"造成傷害:{demage}");       
         StartCoroutine(ShowDamage(demage));
     }
     public void OnHeal(int heal)
     {
-        //Debug.LogError($"攻擊傷害:{hurt} 防禦值:{currentAttribute.Armor} 造成傷害:{demage} ");       
         StartCoroutine(ShowHeal(heal));
     }
     public void PropsEffectOver(int propsID,int delay)

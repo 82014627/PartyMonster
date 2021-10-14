@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LobbyWindow : BaseWindow
@@ -143,34 +144,58 @@ public class LobbyWindow : BaseWindow
                 case "SettingBtn":
                     buttonList[i].onClick.AddListener(SettingBtnOnClick);
                     break;
+                case "CharacterBtn":
+                    buttonList[i].onClick.AddListener(CharacterBtnOnClick);
+                    break;
+                case "TeachBtn":
+                    buttonList[i].onClick.AddListener(TeachBtnOnClick);
+                    break;
                 default:
                     break;
             }
         }
     }
 
+    private void TeachBtnOnClick()
+    {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        WindowManager.Instance.OpenWindow(WindowType.TeachWindow);
+    }
+
+    private void CharacterBtnOnClick()
+    {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        Close();
+        WindowManager.Instance.OpenWindow(WindowType.CharacterWindow);
+    }
+
     private void SettingBtnOnClick()
     {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
         WindowManager.Instance.ShowTips("尚未開發此功能");
     }
 
     private void FriendBtnOnClick()
     {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
         WindowManager.Instance.ShowTips("尚未開發此功能");
     }
 
     private void ShopBtnOnClick()
     {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
         WindowManager.Instance.ShowTips("尚未開發此功能");
     }
 
     private void CancelBattleBtnOnClick()
     {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().BackBtn();
         BufferFactory.CreateAndSendPackage(1302, new LobbyQuitMatchC2S());
     }
 
     private void BattleBtnOnClick()
     {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
         BufferFactory.CreateAndSendPackage(1300, new LobbyToMatchC2S());
     }
 }

@@ -141,7 +141,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.3619506
-        functionName: DoSkillEEvent
+        functionName: DoSkillLEvent
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 79fde36eb46f4034c83c11cb4512eacd,
           type: 3}

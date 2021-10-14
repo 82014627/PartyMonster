@@ -20,6 +20,7 @@ public class PlayerGetHit : EntityFSM
     public override void Enter()
     {
         base.Enter();
+        GameObject.Find("BattleAudioManager").GetComponent<BattleAudioManager>().Hurt();
         fsm.playerCtrl.animatorManager.Play(PlayerAnimationClip.gethit);
     }
 

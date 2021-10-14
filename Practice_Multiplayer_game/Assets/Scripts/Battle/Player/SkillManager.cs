@@ -20,21 +20,21 @@ public class SkillManager : MonoBehaviour
 
         HeroSkillEntity heroSkillEntity = HeroSkillConfig.GetInstance(playerInfo.HeroID); //技能的配置信息
 
-        skillID[KeyCode.Mouse0] = heroSkillEntity.Att_ID;
-        skillID[KeyCode.Q] = heroSkillEntity.Skill1_ID;
-        skillID[KeyCode.E] = heroSkillEntity.Skill2_ID;
+        skillID[KeyCode.J] = heroSkillEntity.Att_ID;
+        skillID[KeyCode.K] = heroSkillEntity.Skill1_ID;
+        skillID[KeyCode.L] = heroSkillEntity.Skill2_ID;
 
-        demageConfig["Mouse0"] = AllSkillConfig.GetInstance(heroSkillEntity.Att_ID).Damage;
-        demageConfig["Q"] = AllSkillConfig.GetInstance(heroSkillEntity.Skill1_ID).Damage;
-        demageConfig["E"] = AllSkillConfig.GetInstance(heroSkillEntity.Skill2_ID).Damage;
+        demageConfig["J"] = AllSkillConfig.GetInstance(heroSkillEntity.Att_ID).Damage;
+        demageConfig["K"] = AllSkillConfig.GetInstance(heroSkillEntity.Skill1_ID).Damage;
+        demageConfig["L"] = AllSkillConfig.GetInstance(heroSkillEntity.Skill2_ID).Damage;
 
-        coolingConfig[KeyCode.Mouse0] = HeroAttributeConfig.GetInstance(playerInfo.HeroID).AttackSpeed;
-        coolingConfig[KeyCode.Q] = AllSkillConfig.GetInstance(heroSkillEntity.Skill1_ID).CoolingTime;
-        coolingConfig[KeyCode.E] = AllSkillConfig.GetInstance(heroSkillEntity.Skill2_ID).CoolingTime;
+        coolingConfig[KeyCode.J] = HeroAttributeConfig.GetInstance(playerInfo.HeroID).AttackSpeed;
+        coolingConfig[KeyCode.K] = AllSkillConfig.GetInstance(heroSkillEntity.Skill1_ID).CoolingTime;
+        coolingConfig[KeyCode.L] = AllSkillConfig.GetInstance(heroSkillEntity.Skill2_ID).CoolingTime;
 
-        keyDownTime[KeyCode.Mouse0] = 0;
-        keyDownTime[KeyCode.Q] = 0;
-        keyDownTime[KeyCode.E] = 0;
+        keyDownTime[KeyCode.J] = 0;
+        keyDownTime[KeyCode.K] = 0;
+        keyDownTime[KeyCode.L] = 0;
     }
 
     Dictionary<KeyCode, float> keyDownTime = new Dictionary<KeyCode, float>();

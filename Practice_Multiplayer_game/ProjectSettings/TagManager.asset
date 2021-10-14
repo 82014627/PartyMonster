@@ -6,9 +6,12 @@ TagManager:
   tags:
   - Ground
   - enemybullet
-  - Q
-  - Mouse0
-  - E
+  - FxTemporaire
+  - Undefined
+  - L
+  - K
+  - J
+  - DeadZone
   layers:
   - Default
   - TransparentFX

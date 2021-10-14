@@ -19,6 +19,7 @@ public class PlayerJump : EntityFSM
     public override void Enter()
     {
         base.Enter();
+        GameObject.Find("BattleAudioManager").GetComponent<BattleAudioManager>().Jump();
         fsm.playerCtrl.animatorManager.Play(PlayerAnimationClip.jump);
         fsm.rigidbody.AddForce(transform.up * 1800);
     }
@@ -36,15 +37,15 @@ public class PlayerJump : EntityFSM
     public override void HandleCMD(BattleUserInputS2C s2cMSG)
     {
         base.HandleCMD(s2cMSG);
-        if (s2cMSG.CMD.Key == KeyCode.Q.GetHashCode())
+        if (s2cMSG.CMD.Key == KeyCode.K.GetHashCode())
         {
             HandleSkillEvent(s2cMSG);
         }
-        else if (s2cMSG.CMD.Key == KeyCode.E.GetHashCode())
+        else if (s2cMSG.CMD.Key == KeyCode.L.GetHashCode())
         {
             HandleSkillEvent(s2cMSG);
         }
-        else if (s2cMSG.CMD.Key == KeyCode.Mouse0.GetHashCode())
+        else if (s2cMSG.CMD.Key == KeyCode.J.GetHashCode())
         {
             //普通攻擊
             HandleSkillEvent(s2cMSG);
@@ -100,16 +101,6 @@ public class PlayerJump : EntityFSM
     public override void HandleMoveEvent(byte[] data)
     {
         base.HandleMoveEvent(data);
-        //float input_X = BitConverter.ToSingle(data, 0);
-        //float beforex = BitConverter.ToSingle(data, 4);
-        //float beforey = BitConverter.ToSingle(data, 8);
-        //float beforez = BitConverter.ToSingle(data, 12);
-        //if (input_X == 0)
-        //{
-        //    transform.position = new Vector3(beforex, beforey, beforez);
-        //    return;
-        //}
-        //transform.position = new Vector3(beforex, beforey, beforez);
         fsm.ToNext(FSMState.Move);
     }
 
@@ -118,7 +109,7 @@ public class PlayerJump : EntityFSM
         base.HandleSkillEvent(s2cMSG);
         if (fsm.playerCtrl.PlayerInfo.HeroID == 1004)
         {
-            if (s2cMSG.CMD.Key == KeyCode.E.GetHashCode())
+            if (s2cMSG.CMD.Key == KeyCode.L.GetHashCode())
             {
                 return;
             }

@@ -108,9 +108,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PropsID: 105
-  Effect_Value: 100
+  Effect_Value: 50
   DelayDestroy: 12
-  Probability: 0.35
+  playerCtrl: {fileID: 0}
 --- !u!54 &5233731866498314361
 Rigidbody:
   m_ObjectHideFlags: 0

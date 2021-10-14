@@ -10,7 +10,10 @@ public class PConfig : MonoBehaviour
     public PlayerCtrl playerCtrl;
     private void Start()
     {
-        Destroy(this.gameObject, DelayDestroy);
+        if (DelayDestroy != 0)
+        {
+            Destroy(this.gameObject, DelayDestroy);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -20,6 +23,7 @@ public class PConfig : MonoBehaviour
             switch (PropsID)
             {
                 case 101:
+                    GameObject.Find("BattleAudioManager").GetComponent<BattleAudioManager>().Heal();
                     playerCtrl.currentAttribute.HP += Effect_Value;
                     if (playerCtrl.currentAttribute.HP > playerCtrl.totalAttribute.HP)
                     {
@@ -30,19 +34,24 @@ public class PConfig : MonoBehaviour
                     Destroy(this.gameObject);
                     break;
                 case 102:
+                    GameObject.Find("BattleAudioManager").GetComponent<BattleAudioManager>().PowerUp();
                     playerCtrl.currentAttribute.Power = playerCtrl.currentAttribute.Power * 1.5f;
                     playerCtrl.PropsEffectOver(PropsID, DelayDestroy);
                     Destroy(this.gameObject);
                     break;
                 case 103:
+                    GameObject.Find("BattleAudioManager").GetComponent<BattleAudioManager>().PowerUp();
                     playerCtrl.currentAttribute.MoveSpeed = playerCtrl.currentAttribute.MoveSpeed * 1.5f;
                     playerCtrl.PropsEffectOver(PropsID, DelayDestroy);
                     Destroy(this.gameObject);
                     break;
                 case 104:
+                    GameObject.Find("BattleAudioManager").GetComponent<BattleAudioManager>().Invincible();
                     playerCtrl.isInvincible = true;
-                    playerCtrl.PropsEffectOver(PropsID, DelayDestroy);
+                    playerCtrl.PropsEffectOver(PropsID, Effect_Value);
                     Destroy(this.gameObject);
+                    break;
+                case 105:
                     break;
                 default:
                     break;
@@ -63,6 +72,7 @@ public class PConfig : MonoBehaviour
             playerCtrl = collision.transform.GetComponent<PlayerCtrl>();
             if (PropsID == 105)
             {
+                GameObject.Find("BattleAudioManager").GetComponent<BattleAudioManager>().Bomb();
                 if (playerCtrl.isSelf == true && playerCtrl.isInvincible == false)
                 {
                     playerCtrl.inputCtrl.SendHudInputC2S(Effect_Value, 0);
@@ -73,7 +83,7 @@ public class PConfig : MonoBehaviour
     }
     private void Update()
     {
-        if (!GetComponent<BoxCollider>())
+        if (!GetComponent<BoxCollider>()) //碰到道具的效果位置
         {
             if (playerCtrl != null)
             {

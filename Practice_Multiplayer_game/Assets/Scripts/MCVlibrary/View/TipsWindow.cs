@@ -65,6 +65,7 @@ public class TipsWindow : BaseWindow
     Action EnterOKBtn;
     private void EnterOKBtnOnClick()
     {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
         if (EnterOKBtn != null)
         {
             EnterOKBtn();

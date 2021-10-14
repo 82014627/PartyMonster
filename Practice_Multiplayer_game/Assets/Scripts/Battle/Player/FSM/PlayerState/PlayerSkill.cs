@@ -20,15 +20,15 @@ public class PlayerSkill : EntityFSM
     public override void Enter()
     {
         base.Enter();
-        if (fsm.SkillCMD.CMD.Key == KeyCode.Q.GetHashCode())
+        if (fsm.SkillCMD.CMD.Key == KeyCode.K.GetHashCode())
         {
             fsm.playerCtrl.animatorManager.Play(PlayerAnimationClip.skill1);
         }
-        else if (fsm.SkillCMD.CMD.Key == KeyCode.E.GetHashCode())
+        else if (fsm.SkillCMD.CMD.Key == KeyCode.L.GetHashCode())
         {
             fsm.playerCtrl.animatorManager.Play(PlayerAnimationClip.skill2);
         }
-        else if (fsm.SkillCMD.CMD.Key == KeyCode.Mouse0.GetHashCode())
+        else if (fsm.SkillCMD.CMD.Key == KeyCode.J.GetHashCode())
         {
             fsm.playerCtrl.animatorManager.Play(PlayerAnimationClip.attack);
         }
