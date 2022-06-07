@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class BattleCtrl : Singleton<BattleCtrl>
 {
+    /// <summary>
+    /// 保存傷害數據
+    /// </summary>
+    /// <param name="rolesID"></param>
+    /// <param name="damage"></param>
     public void SaveDamage(int rolesID, int damage)
     {
         int totalDamage;
@@ -17,6 +22,11 @@ public class BattleCtrl : Singleton<BattleCtrl>
             BattleModel.Instance.PlayersDamage[rolesID] = totalDamage;
         }
     }
+    /// <summary>
+    /// 獲取傷害數據
+    /// </summary>
+    /// <param name="rolesID"></param>
+    /// <returns></returns>
     public int GetDamage(int rolesID)
     {
         if (!BattleModel.Instance.PlayersDamage.ContainsKey(rolesID))
@@ -29,6 +39,11 @@ public class BattleCtrl : Singleton<BattleCtrl>
             return BattleModel.Instance.PlayersDamage[rolesID];
         }
     }
+    /// <summary>
+    /// 保存擊殺數據
+    /// </summary>
+    /// <param name="rolesID"></param>
+    /// <param name="Kills"></param>
     public void SaveKills(int rolesID, int Kills)
     {
         int totalKills;
@@ -42,6 +57,11 @@ public class BattleCtrl : Singleton<BattleCtrl>
             BattleModel.Instance.PlayersKills[rolesID] = totalKills;
         }
     }
+    /// <summary>
+    /// 獲取擊殺數據
+    /// </summary>
+    /// <param name="rolesID"></param>
+    /// <returns></returns>
     public int GetKills(int rolesID)
     {
         if (!BattleModel.Instance.PlayersKills.ContainsKey(rolesID))

@@ -47,9 +47,6 @@ public class MonoSingleton<T> : MonoBehaviour where T:MonoBehaviour
     }
 }
 
-
-
-
 //緩存一個遊戲物件
 public class MonoSingletonObject
 {

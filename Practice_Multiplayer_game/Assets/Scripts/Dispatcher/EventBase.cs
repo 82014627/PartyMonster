@@ -6,10 +6,6 @@ using UnityEngine;
 
 public class EventBase<T,P,X> where T:new () where P:class
 {
-    //1.子类 什么类型
-    //2.
-    //3.
-
     private static T instance;
     public static T Instance {
         get {
@@ -21,11 +17,15 @@ public class EventBase<T,P,X> where T:new () where P:class
         }
     }
 
-    //存储事件ID 还有方法(委托) 
-    //使用线程安全的字典 避免以后多线程环境下出现问题
+    //儲存事件ID 還有方法(委託) 
+    //使用線程安全的字典 避免以后多線程環境下出現問題
    public ConcurrentDictionary<X, List<Action<P>>> dic = new ConcurrentDictionary<X, List<Action<P>>>();
 
-    //添加事件
+    /// <summary>
+    /// 添加事件
+    /// </summary>
+    /// <param name="key">字典的KEY</param>
+    /// <param name="handle">方法</param>
     public void AddEventListener(X key,Action<P> handle) {
         if (dic.ContainsKey(key))
         {
@@ -40,7 +40,11 @@ public class EventBase<T,P,X> where T:new () where P:class
     }
 
 
-    //移除事件
+    /// <summary>
+    /// 移除事件
+    /// </summary>
+    /// <param name="key">字典的KEY</param>
+    /// <param name="handle">方法</param>
     public void RemoveEventListener(X key, Action<P> handle) {
         if (dic.ContainsKey(key))
         {
@@ -55,12 +59,16 @@ public class EventBase<T,P,X> where T:new () where P:class
         }
     }
 
-    //派发事件的接口-带有参数
+    /// <summary>
+    /// 派發事件的接口-带有參數
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="p"></param>
     public void Dispatch(X key,P p) {
         if (dic.ContainsKey(key))
         {
             List<Action<P>> actions = dic[key];
-            if (actions!=null&&actions.Count>0)
+            if (actions!=null && actions.Count > 0)
             {
                 for (int i = 0; i < actions.Count; i++)
                 {
@@ -73,7 +81,10 @@ public class EventBase<T,P,X> where T:new () where P:class
         }
     }
 
-    //派发事件的接口-没有参数的
+    /// <summary>
+    /// 派發事件的接口-没有參數
+    /// </summary>
+    /// <param name="key"></param>
     public void Dispatch(X key) {
         Dispatch(key, null);
     }

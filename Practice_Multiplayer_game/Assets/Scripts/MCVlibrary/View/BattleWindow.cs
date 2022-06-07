@@ -130,7 +130,7 @@ public class BattleWindow : BaseWindow
         isOver = false;
         A_score = 0;
         B_score = 0;
-        time = 60;
+        time = 180;
         deadTime = 10;
         playerCtrl = RoomCtrl.Instance.GetSelfPlayerCtrl();
         playerInfo = playerCtrl.PlayerInfo;
@@ -301,7 +301,7 @@ public class BattleWindow : BaseWindow
 
     private void EnterOKBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         Time.timeScale = 1;
 
         RolesInfo rolesInfo = RolesCtrl.Instance.GetRolesInfo();

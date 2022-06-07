@@ -9599,7 +9599,7 @@ MonoBehaviour:
   PropsID: 101
   Effect_Value: 150
   DelayDestroy: 10
-  Probability: 0.2
+  playerCtrl: {fileID: 0}
 --- !u!54 &3689278294389380840
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9659,5 +9659,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.29846668, y: 0.07509291, z: 0.37102866}
-  m_Center: {x: -0.0017447472, y: -0.29841357, z: 0.009066939}
+  m_Size: {x: 0.23226357, y: 0.3817035, z: 0.29296374}
+  m_Center: {x: -0.008903503, y: -0.12132543, z: -0.0022140741}

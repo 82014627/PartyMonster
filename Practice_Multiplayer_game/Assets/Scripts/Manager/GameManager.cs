@@ -11,12 +11,10 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(this.gameObject);
         uSocket = new USocket(DispatchNetEvent);
+        Debug.Log($"網路初始化完成，IP位址:{uSocket.ip} Port:{uSocket.port}");
         //打開登入介面
         WindowManager.Instance.OpenWindow(WindowType.LoginWindow);
-    }
-    public void NewUsocket()
-    {
-        uSocket = new USocket(DispatchNetEvent);
+        AudioManager.Instance.Init();
     }
     void Update()
     {
@@ -25,9 +23,12 @@ public class GameManager : MonoBehaviour
             uSocket.Handle();
         }
     }
+    /// <summary>
+    /// 進行報文分發事件
+    /// </summary>
+    /// <param name="buffer"></param>
     private void DispatchNetEvent(BufferEntity buffer)
     {
-        //進行報文分發事件
         NetEvent.Instance.Dispatch(buffer.messageID, buffer);
     }
 

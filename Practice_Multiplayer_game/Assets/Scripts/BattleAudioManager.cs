@@ -10,7 +10,9 @@ public class BattleAudioManager : MonoSingleton<BattleAudioManager>
     public AudioClip[] PropClips = new AudioClip[5];
     public AudioClip[] EndClips = new AudioClip[2];
     public AudioSource audioSource;
-    // Start is called before the first frame update
+    /// <summary>
+    /// 初始化
+    /// </summary>
     void Start()
     {
         audioSource = transform.gameObject.AddComponent<AudioSource>();

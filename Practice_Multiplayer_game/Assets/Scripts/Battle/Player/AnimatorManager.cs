@@ -4,6 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 動畫狀態
+/// </summary>
 public enum PlayerAnimationClip
 {
     None,
@@ -22,20 +25,29 @@ public class AnimatorManager : MonoBehaviour
     PlayerCtrl playerCtrl;
     PlayerInfo playerInfo;
     Animator animator;
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="playerCtrl"></param>
     public void Init(PlayerCtrl playerCtrl)
     {
         this.playerCtrl = playerCtrl;
         this.playerInfo = playerCtrl.PlayerInfo;
         animator = transform.GetComponent<Animator>();
     }
-    //播放動畫
+    /// <summary>
+    /// 播放動畫
+    /// </summary>
+    /// <param name="clip"></param>
     public void Play(PlayerAnimationClip clip)
     {
         ResetState();
         animator.SetBool(clip.ToString(), true);
     }
     public string[] clip = new string[] { "None", "Idle","walk", "die", "attack", "skill1", "skill2", "gethit", "victory", "jump"};
-    //重置狀態
+    /// <summary>
+    /// 重置動畫狀態
+    /// </summary>
     public void ResetState()
     {
         for (int i = 0; i < clip.Length; i++)
@@ -43,6 +55,10 @@ public class AnimatorManager : MonoBehaviour
             animator.SetBool(clip[i], false);
         }
     }
+    /// <summary>
+    /// 技能音效
+    /// </summary>
+    /// <param name="Key">技能按鍵</param>
     void EffectAudio(string Key)
     {
         int keycode = 0;
@@ -81,21 +97,27 @@ public class AnimatorManager : MonoBehaviour
                 break;
         }
     }
-    //Q事件
+    /// <summary>
+    /// K技能事件
+    /// </summary>
     public void DoSkillKEvent()
     {
         SpawnEffect("K");
         EffectAudio("K");
     }
 
-    //E
+    /// <summary>
+    /// L技能事件
+    /// </summary>
     public void DoSkillLEvent()
     {
         SpawnEffect("L");
         EffectAudio("L");
     }
 
-    //Mouse0
+    /// <summary>
+    /// J普攻事件
+    /// </summary>
     public void DoSkillJEvent()
     {
         SpawnEffect("J");
@@ -107,7 +129,10 @@ public class AnimatorManager : MonoBehaviour
     bool isSkill100502 = false;
     Animator effectAnim;
 
-    //生成特效
+    /// <summary>
+    /// 生成特效
+    /// </summary>
+    /// <param name="key"></param>
     public void SpawnEffect(string key)
     {
         GameObject effect = ResManager.Instance.LoadEffect(playerInfo.HeroID, key);
@@ -203,7 +228,7 @@ public class AnimatorManager : MonoBehaviour
                 EConfig smoke = effect.transform.Find("smoke").GetComponent<EConfig>();
                 BattleUserInputC2S skillCMD1 = playerCtrl.playerFSM.SkillCMD.CMD;
                 smoke.Init(skillCMD1.RolesID, playerCtrl, skillCMD1.LockTag, skillCMD1.LockID,
-                transform.forward, transform.position, playerCtrl.OnSkillTrriger);
+                transform.forward, transform.position, playerCtrl.OnSkillTrigger);
                 if (this.transform.eulerAngles.y > 270)
                 {                  
                     effect.transform.position = transform.position + new Vector3(-5f, -0.5f, 0);
@@ -257,16 +282,20 @@ public class AnimatorManager : MonoBehaviour
         effect.gameObject.SetActive(true);
         BattleUserInputC2S skillCMD = playerCtrl.playerFSM.SkillCMD.CMD;
         eConfig.Init(skillCMD.RolesID, playerCtrl, skillCMD.LockTag, skillCMD.LockID,
-        transform.forward, transform.position, playerCtrl.OnSkillTrriger);
+        transform.forward, transform.position, playerCtrl.OnSkillTrigger);
     }
 
-    //技能結束的事件
+    /// <summary>
+    /// 技能結束的事件
+    /// </summary>
     public void EndSkill()
     {
         Debug.Log("技能釋放結束");
         playerCtrl.playerFSM.ToNext(FSMState.Idle);
     }
-    //受傷結束的事件
+    /// <summary>
+    /// 受傷結束的事件
+    /// </summary>
     public void EndGetHit()
     {
         Debug.Log("受傷結束");

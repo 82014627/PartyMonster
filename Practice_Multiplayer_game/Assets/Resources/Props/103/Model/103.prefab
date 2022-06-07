@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 3812806167484769270}
   - component: {fileID: 3916043743989288156}
   - component: {fileID: 3901532943370722188}
-  - component: {fileID: 4283645443148152498}
+  - component: {fileID: 8794284703751220539}
   m_Layer: 0
   m_Name: StarsParticles
   m_TagString: Untagged
@@ -4819,7 +4819,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!65 &4283645443148152498
+--- !u!65 &8794284703751220539
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4830,8 +4830,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.2819004, y: 0.36846802, z: 0.04793905}
-  m_Center: {x: 0.05674362, y: -0.073652446, z: 0.62647486}
+  m_Size: {x: 0.2243433, y: 0.21401004, z: 0.24698204}
+  m_Center: {x: 0.056618214, y: -0.059870657, z: 0.7643399}
 --- !u!1 &3811302570353218522
 GameObject:
   m_ObjectHideFlags: 0
@@ -4895,7 +4895,7 @@ MonoBehaviour:
   PropsID: 103
   Effect_Value: 8
   DelayDestroy: 10
-  Probability: 0.2
+  playerCtrl: {fileID: 0}
 --- !u!54 &-8260845291932248112
 Rigidbody:
   m_ObjectHideFlags: 0

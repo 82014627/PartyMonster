@@ -112,51 +112,51 @@ public class CharacterWindow : BaseWindow
 
     private void Enter1001BtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         HeroID = 1001;
     }
 
     private void Enter1002BtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         HeroID = 1002;
     }
 
     private void Enter1003BtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         HeroID = 1003;
     }
 
     private void Enter1004BtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         HeroID = 1004;
     }
 
     private void Enter1005BtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         HeroID = 1005;
     }
 
     private void EnterChooseBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         Choose.SetActive(true);
         Role.SetActive(false);
     }
 
     private void EnterLobbyBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().BackBtn();
+        AudioManager.Instance.BackBtn();
         Close();
         WindowManager.Instance.OpenWindow(WindowType.LobbyWindow);
     }
 
     private void EnterBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         Hero.sprite = ResManager.Instance.LoadRoundHead(HeroID.ToString());
         J.sprite = ResManager.Instance.LoadSkillIcon(HeroID, "J");
         K.sprite = ResManager.Instance.LoadSkillIcon(HeroID, "K");

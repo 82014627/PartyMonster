@@ -4761,8 +4761,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.2525339, y: 0.04583049, z: 0.18883717}
-  m_Center: {x: 0.04222393, y: -0.28682745, z: 0.007900178}
+  m_Size: {x: 0.24872208, y: 0.44433463, z: 0.14618373}
+  m_Center: {x: 0.003795147, y: -0.0751484, z: 0.004166484}
 --- !u!1 &1936447692092054778
 GameObject:
   m_ObjectHideFlags: 0
@@ -4826,7 +4826,7 @@ MonoBehaviour:
   PropsID: 102
   Effect_Value: 8
   DelayDestroy: 10
-  Probability: 0.2
+  playerCtrl: {fileID: 0}
 --- !u!54 &31425689765460286
 Rigidbody:
   m_ObjectHideFlags: 0

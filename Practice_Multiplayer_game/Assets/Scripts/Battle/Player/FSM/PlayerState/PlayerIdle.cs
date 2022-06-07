@@ -72,7 +72,7 @@ public class PlayerIdle : EntityFSM
     public override void HandleSkillEvent(BattleUserInputS2C s2cMSG)
     {
         base.HandleSkillEvent(s2cMSG);
-        if (fsm.playerCtrl.isJump == false)
+        if (fsm.playerCtrl.isCanJump == false)
         {
             if (fsm.playerCtrl.PlayerInfo.HeroID == 1004)
             {

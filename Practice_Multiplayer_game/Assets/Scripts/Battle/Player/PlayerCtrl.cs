@@ -18,7 +18,7 @@ public class PlayerCtrl : MonoBehaviour
     public HeroAttributeEntity currentAttribute;
     public HeroAttributeEntity totalAttribute;
     public GameObject hud;
-    public bool isJump = false;
+    public bool isCanJump = false;
     public bool isInvincible = false;
     public bool isDead = false;
     public void Relive()
@@ -39,57 +39,6 @@ public class PlayerCtrl : MonoBehaviour
     public AnimatorManager animatorManager;
     public PlayerFSM playerFSM;
     public InputCtrl inputCtrl;
-    //public bool isTeach = false;
-    //public int HeroID;
-    //private void Start()
-    //{
-    //    if (isTeach == true)
-    //    {
-    //        PlayerInfo = new PlayerInfo();
-    //        PlayerInfo.RolesInfo.RoomID = 0;
-    //        if (HeroID == 1001)
-    //        {
-    //            PlayerInfo.TeamID = 0;
-    //        }
-    //        else if (HeroID == 1002)
-    //        {
-    //            PlayerInfo.TeamID = 1;
-    //        }
-    //        //復活時會用到
-    //        spawnPosition = transform.position;
-    //        spawnRotation = transform.eulerAngles;
-
-    //        //獲取他的屬性 當前屬性 還有總的屬性
-    //        currentAttribute = HeroAttributeConfig.GetInstance(HeroID);
-    //        totalAttribute = HeroAttributeConfig.GetInstance(HeroID);
-
-    //        RoomModel.Instance.SaveHeroAttribute(0, currentAttribute, totalAttribute);
-
-    //        //人物的HUD 血條 藍條 暱稱 等級
-    //        hud = ResManager.Instance.LoadHUD();
-    //        hud.transform.position = transform.position;
-    //        hud.transform.eulerAngles = Camera.main.transform.eulerAngles;
-    //        hpFill = hud.transform.Find("Hero_Head/HPBG/HP").GetComponent<Image>();
-    //        NickName = hud.transform.Find("Hero_Head/NickName").GetComponent<Text>();
-    //        HurtText = hud.transform.Find("Hero_Head/HurtText").GetComponent<Text>();
-    //        HudUpdate(true);
-    //        //技能管理器
-    //        skillManager = this.gameObject.AddComponent<SkillManager>();
-    //        skillManager.Init(this);
-    //        //動畫管理器
-    //        animatorManager = this.gameObject.AddComponent<AnimatorManager>();
-    //        animatorManager.Init(this);
-    //        //角色的狀態機
-    //        playerFSM = this.gameObject.AddComponent<PlayerFSM>();
-    //        playerFSM.Init(this);
-    //        //輸入控制器
-    //        inputCtrl = GameObject.Find("BattleManager").GetComponent<InputCtrl>();
-    //        if (isSelf)
-    //        {
-    //            inputCtrl.Init(this);
-    //        }
-    //    }
-    //}
     internal void Init(PlayerInfo playerInfo)
     {
         this.PlayerInfo = playerInfo;
@@ -125,7 +74,10 @@ public class PlayerCtrl : MonoBehaviour
         //輸入控制器
         inputCtrl = GameObject.Find("BattleManager").GetComponent<InputCtrl>();
     }
-
+    /// <summary>
+    /// 血量UI更新
+    /// </summary>
+    /// <param name="init"></param>
     public void HudUpdate(bool init = false)
     {
         if (PlayerInfo.TeamID == 0)
@@ -136,18 +88,6 @@ public class PlayerCtrl : MonoBehaviour
         {
             NickName.color = Color.blue;
         }
-        //if (HeroID == 1001)
-        //{
-        //    NickName.text = "You";
-        //}
-        //else if (HeroID == 1002)
-        //{
-        //    NickName.text = "Enemy";
-        //}
-        //else
-        //{
-        //    NickName.text = PlayerInfo.RolesInfo.NickName;
-        //}
         NickName.text = PlayerInfo.RolesInfo.NickName;
         if (init == true)
         {
@@ -158,6 +98,11 @@ public class PlayerCtrl : MonoBehaviour
             hpFill.DOFillAmount(currentAttribute.HP / totalAttribute.HP, 0.2f).SetAutoKill(true);
         }
     }
+    /// <summary>
+    /// 顯示傷害
+    /// </summary>
+    /// <param name="damage">傷害</param>
+    /// <returns></returns>
     public IEnumerator ShowDamage(int damage)
     {
         HurtText.color = Color.red;
@@ -174,6 +119,11 @@ public class PlayerCtrl : MonoBehaviour
         HurtText.transform.position = originalPos;
         HurtText.transform.localScale = new Vector3(0.06492111f, 0.06492111f, 0.06492111f);
     }
+    /// <summary>
+    /// 顯示回復血量
+    /// </summary>
+    /// <param name="heal">回復血量</param>
+    /// <returns></returns>
     public IEnumerator ShowHeal(int heal)
     {
         HurtText.color = Color.green;
@@ -190,8 +140,9 @@ public class PlayerCtrl : MonoBehaviour
         HurtText.transform.position = originalPos;
         HurtText.transform.localScale = new Vector3(0.06492111f, 0.06492111f, 0.06492111f);
     }
-
-    //Vector3 cameraOffset = new Vector3(3.74f, 1.6f, 0);
+    /// <summary>
+    /// 判斷掉下去死亡 以及血量位置轉向更新
+    /// </summary>
     public void LateUpdate()
     {
         if (transform.position.x < 2 || transform.position.y < -2 || transform.position.x > 23 || transform.position.y < -2)
@@ -214,6 +165,13 @@ public class PlayerCtrl : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.tag == "Ground")
+        {
+            if (this.transform.position.y > collision.transform.position.y)
+            {
+                isCanJump = true;
+            }
+        }
         if (collision.gameObject.GetComponent<PConfig>())
         {
             PConfig pConfig = collision.gameObject.GetComponent<PConfig>();
@@ -221,11 +179,14 @@ public class PlayerCtrl : MonoBehaviour
             PConfig pConfig1 = effect.GetComponent<PConfig>();
             pConfig1.playerCtrl = this;
         }
+    }
+    private void OnCollisionStay(Collision collision)
+    {
         if (collision.gameObject.tag == "Ground")
         {
             if (this.transform.position.y > collision.transform.position.y)
             {
-                isJump = true;
+                isCanJump = true;
             }
         }
     }
@@ -235,16 +196,16 @@ public class PlayerCtrl : MonoBehaviour
         {
             if (this.transform.position.y > collision.transform.position.y)
             {
-                isJump = false;
+                isCanJump = false;
             }
         }
     }
     /// <summary>
-    /// 碰撞到技能触发器
+    /// 碰撞到技能觸發器
     /// </summary>
     /// <param name="eConfig"></param>
     /// <param name="trrigerObject"></param>
-    public void OnSkillTrriger(EConfig eConfig, GameObject trrigerObject) //打到敵人
+    public void OnSkillTrigger(EConfig eConfig, GameObject trrigerObject) //打到敵人
     {
         bool isDestroy = false;
         //角色
@@ -252,7 +213,7 @@ public class PlayerCtrl : MonoBehaviour
         {
             PlayerCtrl hitPlayerCtrl = trrigerObject.transform.GetComponent<PlayerCtrl>();
             PlayerInfo hitPlayerInfo = hitPlayerCtrl.PlayerInfo;
-            //判断是否同个阵营的
+            //判斷是否同個陣營
             if (hitPlayerInfo.TeamID != PlayerInfo.TeamID)
             {
                 if (eConfig.effectID != 100501)
@@ -267,7 +228,6 @@ public class PlayerCtrl : MonoBehaviour
                     {
                         //克隆爆炸物
                         GameObject hitObj = GameObject.Instantiate(eConfig.hitLoad);
-                        //hitObj.transform.position = trrigerObject.transform.position;
                         if (eConfig.effectID == 100200)
                         {
                             hitObj.transform.position = trrigerObject.transform.position + new Vector3(0, 0.5f, -2);
@@ -276,7 +236,7 @@ public class PlayerCtrl : MonoBehaviour
                         {
                             hitObj.transform.position = eConfig.moveRoot.gameObject.transform.position;
                         }
-                        //并且销毁
+                        //並且銷毀
                         Destroy(eConfig.gameObject);
                     }
                     else
@@ -284,11 +244,6 @@ public class PlayerCtrl : MonoBehaviour
                         Destroy(eConfig.gameObject);
                     }
                 }
-            }
-            else
-            {
-                //如果是同个阵营的
-                return;
             }
         }
     }
@@ -314,7 +269,7 @@ public class PlayerCtrl : MonoBehaviour
                 PlayerCtrl hitPlayerCtrl = eConfig.releaser;
                 PlayerInfo hitPlayerInfo = hitPlayerCtrl.PlayerInfo;
 
-                //判断是否同个阵营的
+                //判斷是否同陣營
                 if (hitPlayerInfo.TeamID != PlayerInfo.TeamID)
                 {
                     if (eConfig.effectID != 100501)
@@ -335,7 +290,7 @@ public class PlayerCtrl : MonoBehaviour
         }
     }
     /// <summary>
-    /// 受到技能伤害 要减血
+    /// 受到傷害 顯示扣血
     /// </summary>
     /// <param name="hurt"></param>
     public void OnSkillHit(int demage)
@@ -343,11 +298,20 @@ public class PlayerCtrl : MonoBehaviour
         Debug.LogError($"造成傷害:{demage}");       
         StartCoroutine(ShowDamage(demage));
     }
+    /// <summary>
+    /// 顯示治癒 
+    /// </summary>
+    /// <param name="heal"></param>
     public void OnHeal(int heal)
     {
         StartCoroutine(ShowHeal(heal));
     }
-    public void PropsEffectOver(int propsID,int delay)
+    /// <summary>
+    /// 道具效果結束
+    /// </summary>
+    /// <param name="propsID"></param>
+    /// <param name="delay"></param>
+    public void PropsEffectOver(int propsID, int delay)
     {
         string props = "Props" + propsID.ToString();
         Invoke(props, delay);

@@ -23,24 +23,14 @@ namespace Game.View
         public override void Update(float deltaTime)
         {
             base.Update(deltaTime);
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                isIPOpen = !isIPOpen;
-                IP.SetActive(isIPOpen);
-            }
         }
         InputField AccountInput;
         InputField PwdInput;
-        InputField IP_InputField;
-        GameObject IP;
-        bool isIPOpen = false;
         protected override void Awake()
         {
             base.Awake();
             AccountInput = transform.Find("UserBack/AccountInput").GetComponent<InputField>();
             PwdInput = transform.Find("UserBack/pwdInput").GetComponent<InputField>();
-            IP_InputField = transform.Find("IP/IP_InputField").GetComponent<InputField>();
-            IP = transform.Find("IP").gameObject;
         }
 
         protected override void OnAddListener()
@@ -50,9 +40,9 @@ namespace Game.View
             NetEvent.Instance.AddEventListener(1001, handleUserLoginS2C);
         }
         /// <summary>
-        /// 返回登入結果
+        /// 處理登入結果
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="response"></param>
         private void handleUserLoginS2C(BufferEntity response)
         {
             UserLoginS2C s2cMSG = ProtobufHelper.FromBytes<UserLoginS2C>(response.proto);
@@ -75,17 +65,20 @@ namespace Game.View
                     break;
                 case 1:
                     Debug.Log("存在敏感字詞");
-                    WindowManager.Instance.ShowTips("存在敏感字詞!");//打開提示窗體
+                    WindowManager.Instance.ShowTips("存在敏感字詞!");//打開提示窗體 提示
                     break;
                 case 2:
                     Debug.Log("帳號密碼不匹配");
-                    WindowManager.Instance.ShowTips("帳號密碼不匹配!"); //打開提示窗體
+                    WindowManager.Instance.ShowTips("帳號密碼不匹配!"); 
                     break;
                 default:
                     break;
             }
         }
-
+        /// <summary>
+        /// 處理註冊結果
+        /// </summary>
+        /// <param name="response"></param>
         private void handleUserRegisterS2C(BufferEntity response)
         {
             UserRegisterS2C s2cMSG = ProtobufHelper.FromBytes<UserRegisterS2C>(response.proto);
@@ -93,19 +86,19 @@ namespace Game.View
             {
                 case 0:
                     Debug.Log("註冊成功!");
-                    WindowManager.Instance.ShowTips("註冊成功!");//打開提示窗體 提示
+                    WindowManager.Instance.ShowTips("註冊成功!");
                     break;
                 case 1:
                     Debug.Log("存在敏感字詞");
-                    WindowManager.Instance.ShowTips("存在敏感字詞!");//打開提示窗體 提示
+                    WindowManager.Instance.ShowTips("存在敏感字詞!");
                     break;
                 case 2:
                     Debug.Log("長度不夠");
-                    WindowManager.Instance.ShowTips("長度不夠!");//打開提示窗體 提示
+                    WindowManager.Instance.ShowTips("長度不夠!");
                     break;
                 case 3:
                     Debug.Log("帳號已被註冊");
-                    WindowManager.Instance.ShowTips("帳號已被註冊!");//打開提示窗體 提示
+                    WindowManager.Instance.ShowTips("帳號已被註冊!");
                     break;
                 default:
                     break;
@@ -126,7 +119,6 @@ namespace Game.View
         {
             base.OnRemoveListener();
         }
-
         protected override void RegisterUIEvent()
         {
             base.RegisterUIEvent();
@@ -140,28 +132,15 @@ namespace Game.View
                     case "login_button":
                         buttonList[i].onClick.AddListener(LoginBtnOnClick);
                         break;
-                    case "OkBtn":
-                        buttonList[i].onClick.AddListener(OkBtnOnClick);
-                        break;
                     default:
                         break;
                 }
             }
 
         }
-
-        private void OkBtnOnClick()
-        {
-            if (IP_InputField.text != null)
-            {
-                GameManager.uSocket.ip = IP_InputField.text;
-                GameObject.Find("GameManager").GetComponent<GameManager>().NewUsocket();
-            }
-        }
-
         private void LoginBtnOnClick()
         {
-            GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+            AudioManager.Instance.OKBtn();
             if (string.IsNullOrEmpty(AccountInput.text))
             {
                 Debug.Log("帳號不可為空");
@@ -184,7 +163,7 @@ namespace Game.View
 
         private void RegisterBtnOnClick()
         {
-            GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+            AudioManager.Instance.OKBtn();
             if (string.IsNullOrEmpty(AccountInput.text))
             {
                 Debug.Log("帳號不可為空");

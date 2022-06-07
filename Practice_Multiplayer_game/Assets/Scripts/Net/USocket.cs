@@ -11,8 +11,8 @@ namespace Game.Net
     public class USocket
     {
         UdpClient udpClient;
-        public string ip = "10.120.2.185";
-        int port = 8899;
+        public string ip = "127.0.0.1";
+        public int port = 8000;
         public static UClient local;
         public static IPEndPoint server;
         /// <summary>
@@ -37,7 +37,7 @@ namespace Game.Net
                 try
                 {
                     UdpReceiveResult result = await udpClient.ReceiveAsync(); //可以用来等待，因為是異步的接口               
-                    awaitHandle.Enqueue(result); //當有客户端發送消息的时候，要缓存起来，再来進行處理
+                    awaitHandle.Enqueue(result); //當有客户端發送消息的時候，要缓存起来，再来進行處理
                     Debug.Log("接收到了消息!");
                 }
                 catch (Exception e)

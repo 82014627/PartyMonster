@@ -73,17 +73,6 @@ public class PlayerMove : EntityFSM
         base.HandleMoveEvent(data);
         input_X = BitConverter.ToSingle(data, 0);
 
-        beforex = BitConverter.ToSingle(data, 4);
-        beforey = BitConverter.ToSingle(data, 8);
-        beforez = BitConverter.ToSingle(data, 12);
-        if (x != beforex || y != beforey || z != beforez)
-        {
-            x = beforex;
-            y = beforey;
-            z = beforez;
-            transform.position = new Vector3(x, y, z);
-        }
-
         if (isMove == true)
         {
             Vector3 globalDirectionForward = transform.TransformDirection(Vector3.forward);
@@ -112,7 +101,7 @@ public class PlayerMove : EntityFSM
     {
         base.HandleSkillEvent(s2cMSG);
         //進入技能狀態
-        if (fsm.playerCtrl.isJump == false)
+        if (fsm.playerCtrl.isCanJump == false)
         {
             if (fsm.playerCtrl.PlayerInfo.HeroID == 1004)
             {

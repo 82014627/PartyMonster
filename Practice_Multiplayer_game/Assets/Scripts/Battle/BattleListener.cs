@@ -11,7 +11,9 @@ public class BattleListener : Singleton<BattleListener>
     Queue<byte[]> awaitMoveHandle;
     Queue<byte[]> awaitHudHandle;
     Queue<byte[]> awaitPropsHandle;
-    //初始化的方法 監聽戰鬥的網路消息
+    /// <summary>
+    /// 初始化 監聽戰鬥的網路消息
+    /// </summary>
     public void Init()
     {
         awaitHandle = new Queue<BattleUserInputS2C>();
@@ -23,7 +25,9 @@ public class BattleListener : Singleton<BattleListener>
         NetEvent.Instance.AddEventListener(2, HandleHudS2C);
         NetEvent.Instance.AddEventListener(3, HandlePropsS2C);
     }
-    //釋放的方法 移除監聽網路消息
+    /// <summary>
+    /// 釋放 移除監聽網路消息
+    /// </summary>
     public void Release()
     {
         NetEvent.Instance.RemoveEventListener(1500, HandleBattleUserInputS2C);
@@ -36,7 +40,10 @@ public class BattleListener : Singleton<BattleListener>
         awaitPropsHandle.Clear();
     }
 
-    //處理存儲網路事件的方法
+    /// <summary>
+    /// 處理網路事件
+    /// </summary>
+    /// <param name="response"></param>
     public void HandleBattleUserInputS2C(BufferEntity response)
     {
         BattleUserInputS2C s2cMSG = ProtobufHelper.FromBytes<BattleUserInputS2C>(response.proto);
@@ -47,7 +54,7 @@ public class BattleListener : Singleton<BattleListener>
     byte[] propsData;
     public void HandleMoveInputS2C(BufferEntity response)
     {
-        MoveData = new byte[24];
+        MoveData = new byte[11];
         MoveData = response.proto;
         awaitMoveHandle.Enqueue(MoveData);
     }
@@ -63,7 +70,10 @@ public class BattleListener : Singleton<BattleListener>
         propsData = response.proto;
         awaitPropsHandle.Enqueue(propsData);
     }
-    //調用網路事件的方法
+    /// <summary>
+    /// 調用網路事件
+    /// </summary>
+    /// <param name="action"></param>
     public void PlayerFrame(Action<BattleUserInputS2C> action)
     {
         if (action != null && awaitHandle.Count > 0)

@@ -10,14 +10,14 @@ using UnityEngine;
 class JsonHelper
 {
     /// <summary>  
-    /// 将对象序列化为JSON格式  
+    /// 將對象序列化為JSON格式  
     /// </summary>  
-    /// <param name="o">对象</param>  
+    /// <param name="o">對象</param>  
     /// <returns>json字符串</returns>  
     public static string SerializeObject(object o)
     {
         JsonMapper.RegisterExporter<float>((obj, writer) => writer.Write(Convert.ToDouble(obj)));
-        //LitJson本身不支持float类型的数据  这里将它进行转换成 double
+        //LitJson本身不支持float類型的數據  這裡將它進行轉換成double
         JsonMapper.RegisterImporter<double, float>(input => Convert.ToSingle(input));
         string json = JsonMapper.ToJson(o);
         return json;

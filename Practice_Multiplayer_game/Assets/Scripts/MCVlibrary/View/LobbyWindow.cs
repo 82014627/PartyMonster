@@ -158,44 +158,44 @@ public class LobbyWindow : BaseWindow
 
     private void TeachBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         WindowManager.Instance.OpenWindow(WindowType.TeachWindow);
     }
 
     private void CharacterBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         Close();
         WindowManager.Instance.OpenWindow(WindowType.CharacterWindow);
     }
 
     private void SettingBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         WindowManager.Instance.ShowTips("尚未開發此功能");
     }
 
     private void FriendBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         WindowManager.Instance.ShowTips("尚未開發此功能");
     }
 
     private void ShopBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         WindowManager.Instance.ShowTips("尚未開發此功能");
     }
 
     private void CancelBattleBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().BackBtn();
+        AudioManager.Instance.BackBtn();
         BufferFactory.CreateAndSendPackage(1302, new LobbyQuitMatchC2S());
     }
 
     private void BattleBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         BufferFactory.CreateAndSendPackage(1300, new LobbyToMatchC2S());
     }
 }

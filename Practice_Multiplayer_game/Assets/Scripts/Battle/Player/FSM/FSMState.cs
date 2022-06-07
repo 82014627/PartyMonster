@@ -13,9 +13,3 @@ public enum FSMState
    Jump,//跳
    GetHit,//受傷
 }
-
-
-//public enum  GameState
-//{
-
-//}

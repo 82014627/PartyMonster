@@ -68,7 +68,7 @@ public class RoomWindow : BaseWindow
             GameObject go = GameObject.Instantiate(TeamA_Player.gameObject, TeamA_Player.parent, false);
             if (i == 1)
             {
-                go.transform.position += new Vector3(0, -137, 0);
+                go.transform.position += new Vector3(0, -247, 0);
             }
             go.transform.Find("NickName").GetComponent<Text>().text = roomInfo.TeamA[i].NickName;
             go.gameObject.SetActive(true);
@@ -79,7 +79,7 @@ public class RoomWindow : BaseWindow
             GameObject go = GameObject.Instantiate(TeamB_Player.gameObject, TeamB_Player.parent, false);
             if (i == 1)
             {
-                go.transform.position += new Vector3(0, -137, 0);
+                go.transform.position += new Vector3(0, -247, 0);
             }
             go.transform.Find("NickName").GetComponent<Text>().text = roomInfo.TeamB[i].NickName;
             go.gameObject.SetActive(true);
@@ -89,7 +89,9 @@ public class RoomWindow : BaseWindow
         ct = new CancellationTokenSource();
         TimeDown();
     }
-
+    /// <summary>
+    /// 倒數計時
+    /// </summary>
     async void TimeDown()
     {
         while (time > 0)
@@ -115,6 +117,10 @@ public class RoomWindow : BaseWindow
     }
     Transform TeamALoad_Player, TeamBLoad_Player;
     AsyncOperation async;
+    /// <summary>
+    /// 處理房間進入戰鬥
+    /// </summary>
+    /// <param name="response"></param>
     private void HandleRoomToBattleS2C(BufferEntity response)
     {
         Debug.Log("加載戰鬥");
@@ -127,32 +133,49 @@ public class RoomWindow : BaseWindow
         for (int i = 0; i < s2cMSG.PlayerList.Count; i++)
         {
             GameObject go;
-            //A隊伍
-            if (s2cMSG.PlayerList[i].TeamID == 0)
+            if (s2cMSG.PlayerList.Count == 2)//兩人PK
             {
-                go = GameObject.Instantiate(TeamALoad_Player.gameObject, TeamALoad_Player.parent, false);
-                if (i == 0)
+                //A隊伍
+                if (s2cMSG.PlayerList[i].TeamID == 0)
                 {
-                    go.transform.position += new Vector3(-150, 0, 0);
+                    go = GameObject.Instantiate(TeamALoad_Player.gameObject, TeamALoad_Player.parent, false);
                 }
-                else if (i == 1)
+                //B隊伍
+                else
                 {
-                    go.transform.position += new Vector3(150, 0, 0);
+                    go = GameObject.Instantiate(TeamBLoad_Player.gameObject, TeamBLoad_Player.parent, false);
                 }
             }
-            //B隊伍
-            else
+            else//雙人團體戰
             {
-                go = GameObject.Instantiate(TeamBLoad_Player.gameObject, TeamBLoad_Player.parent, false);
-                if (i == 2)
+                //A隊伍
+                if (s2cMSG.PlayerList[i].TeamID == 0)
                 {
-                    go.transform.position += new Vector3(-150, 0, 0);
+                    go = GameObject.Instantiate(TeamALoad_Player.gameObject, TeamALoad_Player.parent, false);
+                    if (i == 0)
+                    {
+                        go.transform.position += new Vector3(-150, 0, 0);
+                    }
+                    else if (i == 1)
+                    {
+                        go.transform.position += new Vector3(150, 0, 0);
+                    }
                 }
-                else if (i == 3)
+                //B隊伍
+                else
                 {
-                    go.transform.position += new Vector3(150, 0, 0);
+                    go = GameObject.Instantiate(TeamBLoad_Player.gameObject, TeamBLoad_Player.parent, false);
+                    if (i == 2)
+                    {
+                        go.transform.position += new Vector3(-150, 0, 0);
+                    }
+                    else if (i == 3)
+                    {
+                        go.transform.position += new Vector3(150, 0, 0);
+                    }
                 }
             }
+
             go.transform.Find("Hero_head").GetComponent<Image>().sprite 
                 = ResManager.Instance.LoadRoundHead(s2cMSG.PlayerList[i].HeroID);
             go.transform.Find("NickName").GetComponent<Text>().text
@@ -169,7 +192,9 @@ public class RoomWindow : BaseWindow
         //定時的去發送加載進度
         SendProgress();
     }
-
+    /// <summary>
+    /// 發送Server載入場景的進度
+    /// </summary>
     async void SendProgress()
     {
         BufferFactory.CreateAndSendPackage(1406, new RoomLoadProgressC2S()
@@ -183,7 +208,10 @@ public class RoomWindow : BaseWindow
         }
         SendProgress();
     }
-
+    /// <summary>
+    /// 處理載入遊戲場景
+    /// </summary>
+    /// <param name="response"></param>
     private async void HandleRoomLoadProgressS2C(BufferEntity response)
     {
         //更新介面
@@ -208,7 +236,10 @@ public class RoomWindow : BaseWindow
             }
         }
     }
-
+    /// <summary>
+    /// 處理鎖定英雄
+    /// </summary>
+    /// <param name="response"></param>
     private void HandleRoomLockHeroS2C(BufferEntity response)
     {
         RoomLockHeroS2C s2cMSG = ProtobufHelper.FromBytes<RoomLockHeroS2C>(response.proto);
@@ -221,7 +252,10 @@ public class RoomWindow : BaseWindow
             isLock = true;//已鎖定英雄
         }
     }
-
+    /// <summary>
+    /// 處理房間訊息
+    /// </summary>
+    /// <param name="response"></param>
     private void HandleRoomSendMsgS2C(BufferEntity response)
     {
         RoomSendMsgS2C s2cMSG = ProtobufHelper.FromBytes<RoomSendMsgS2C>(response.proto);
@@ -229,7 +263,10 @@ public class RoomWindow : BaseWindow
         ChatInput.text = null;
         ChatVertical.value = 0;
     }
-
+    /// <summary>
+    /// 處理房間關閉
+    /// </summary>
+    /// <param name="response"></param>
     private void HandleRoomCloseS2C(BufferEntity response)
     {
         RoomCloseS2C s2cMSG = ProtobufHelper.FromBytes<RoomCloseS2C>(response.proto);
@@ -238,7 +275,10 @@ public class RoomWindow : BaseWindow
         WindowManager.Instance.OpenWindow(WindowType.LobbyWindow);
         Close();
     }
-
+    /// <summary>
+    /// 處理選擇英雄
+    /// </summary>
+    /// <param name="response"></param>
     private void HandleRoomSelectHeroS2C(BufferEntity response)
     {
         RoomSelectHeroS2C s2cMSG = ProtobufHelper.FromBytes<RoomSelectHeroS2C>(response.proto);
@@ -295,19 +335,10 @@ public class RoomWindow : BaseWindow
                 case "Hero1005":
                     SendSelectHero(buttonList[i], 1005);
                     break;
-                //case "Hero1006":
-                //    SendSelectHero(buttonList[i], 1006);
-                //    break;
-                //case "Hero1007":
-                //    SendSelectHero(buttonList[i], 1007);
-                //    break;
-                //case "Hero1008":
-                //    SendSelectHero(buttonList[i], 1008);
-                //    break;
                 case "LockBtn":
                     buttonList[i].onClick.AddListener(() =>
                     {
-                        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+                        AudioManager.Instance.OKBtn();
                         if (isLock == false)
                         {
                             if (lockHeroID == 0)
@@ -329,12 +360,16 @@ public class RoomWindow : BaseWindow
             }
         }
 }
-
+    /// <summary>
+    /// 發送Server選擇英雄
+    /// </summary>
+    /// <param name="button">按鈕</param>
+    /// <param name="heroID">英雄ID</param>
     private void SendSelectHero(Button button, int heroID)
     {
         button.onClick.AddListener(() =>
         {
-            GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+            AudioManager.Instance.OKBtn();
             if (isLock == false)
             {
                 BufferFactory.CreateAndSendPackage(1400, new RoomSelectHeroC2S()

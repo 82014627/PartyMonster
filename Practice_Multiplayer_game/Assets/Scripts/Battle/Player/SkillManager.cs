@@ -38,13 +38,9 @@ public class SkillManager : MonoBehaviour
     }
 
     Dictionary<KeyCode, float> keyDownTime = new Dictionary<KeyCode, float>();
-    public void DoCooling(KeyCode key)//, Action<float> action)
+    public void DoCooling(KeyCode key)
     {
         keyDownTime[key] = Time.time;
-        //if (action != null)
-        //{
-        //    action(keyDownTime[key]);
-        //}
     }
     public float SurplusTime(KeyCode key)
     {

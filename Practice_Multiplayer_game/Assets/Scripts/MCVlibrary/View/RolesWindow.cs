@@ -45,13 +45,10 @@ public class RolesWindow : BaseWindow
             RolesCtrl.Instance.SaveRolesInfo(s2cMSG.RolesInfo);
             //關閉當前這個窗口
             Close();
-            //載入新手教學
-            //SceneManager.LoadScene("Teach");
             WindowManager.Instance.OpenWindow(WindowType.LobbyWindow);
         }
         else
         {
-            //角色已經存在創建失敗
             Debug.Log("角色已經存在 創建失敗");
             WindowManager.Instance.ShowTips("存在相同的角色名 創建失敗");
         }
@@ -91,7 +88,7 @@ public class RolesWindow : BaseWindow
 
     private void EnterOKBtnOnClick()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         RolesCreateC2S c2sMSG = new RolesCreateC2S();
         c2sMSG.NickName = nickName_inputField.text;
 

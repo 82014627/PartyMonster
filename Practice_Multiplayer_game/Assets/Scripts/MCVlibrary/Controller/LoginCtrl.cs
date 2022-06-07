@@ -10,6 +10,10 @@ namespace Assets.MCVlibrary.Controller
 {
     public class LoginCtrl : Singleton<LoginCtrl>
     {
+        /// <summary>
+        /// 保存角色數據
+        /// </summary>
+        /// <param name="rolesInfo"></param>
         public void SaveRolesInfo(RolesInfo rolesInfo)
         {
             PlayerModel.Instance.rolesInfo = rolesInfo;

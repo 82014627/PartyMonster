@@ -1,5 +1,4 @@
-﻿using Game.Model;
-using ProtoMsg;
+﻿using ProtoMsg;
 using System;
 using System.Collections;
 using System.Collections.Generic;

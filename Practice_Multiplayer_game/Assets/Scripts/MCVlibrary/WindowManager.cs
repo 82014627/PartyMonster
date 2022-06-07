@@ -7,11 +7,8 @@ using UnityEngine;
 public class WindowManager : MonoSingleton<WindowManager>
 {
     Dictionary<WindowType, BaseWindow> windowDic = new Dictionary<WindowType, BaseWindow>();
-    //構造函數 初始化
     public WindowManager()
     {
-        //商店
-        windowDic.Add(WindowType.StoreWindow, new StoreWindow());
         windowDic.Add(WindowType.LoginWindow, new LoginWindow());
         windowDic.Add(WindowType.TipsWindow, new TipsWindow());
         windowDic.Add(WindowType.RolesWindow, new RolesWindow());
@@ -31,7 +28,11 @@ public class WindowManager : MonoSingleton<WindowManager>
             }
         }
     }
-    //打開窗口
+    /// <summary>
+    /// 打開窗口
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public BaseWindow OpenWindow(WindowType type)
     {
         BaseWindow window;
@@ -46,7 +47,10 @@ public class WindowManager : MonoSingleton<WindowManager>
             return null;
         }
     }
-    //關閉窗口
+    /// <summary>
+    /// 關閉窗口
+    /// </summary>
+    /// <param name="type"></param>
     public void CloseWindow(WindowType type)
     {
         BaseWindow window;
@@ -59,7 +63,10 @@ public class WindowManager : MonoSingleton<WindowManager>
             Debug.LogError($"Open Error:{type}!");
         }
     }
-    //預加載
+    /// <summary>
+    /// 預加載
+    /// </summary>
+    /// <param name="type"></param>
     public void PreLoadWindow(ScenesType type)
     {
         foreach (var item in windowDic.Values)
@@ -71,7 +78,11 @@ public class WindowManager : MonoSingleton<WindowManager>
         }
     }
 
-    //隱藏調某個類型的所有窗口
+    /// <summary>
+    /// 隱藏掉某個類型的所有窗口
+    /// </summary>
+    /// <param name="type">類型</param>
+    /// <param name="isDestroy">是否刪除</param>
     public void HideAllWindow(ScenesType type,bool isDestroy = false)
     {
         foreach (var item in windowDic.Values)
@@ -82,12 +93,21 @@ public class WindowManager : MonoSingleton<WindowManager>
             }
         }
     }
+    /// <summary>
+    /// 打開提示窗體
+    /// </summary>
+    /// <param name="text">提示文字</param>
+    /// <param name="EnterOKBtn">提示結束事件</param>
     public void ShowTips(string text, Action EnterOKBtn = null)
     {
         TipsWindow tipsWindow = (TipsWindow)Instance.OpenWindow(WindowType.TipsWindow);
         tipsWindow.ShowTips(text, EnterOKBtn);
     }
-
+    /// <summary>
+    /// 獲取當前窗體
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public BaseWindow GetWindow(WindowType type)
     {
         BaseWindow window;

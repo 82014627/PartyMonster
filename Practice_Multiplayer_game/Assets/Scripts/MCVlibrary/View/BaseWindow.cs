@@ -19,45 +19,62 @@ namespace Game.View
 
         //需要給子類提供的接口
 
-        //初始化
+        /// <summary>
+        /// 初始化
+        /// </summary>
         protected virtual void Awake()
         {
             buttonList = transform.GetComponentsInChildren<Button>(true);
             RegisterUIEvent();
         }
-        //UI事件的註冊
+        /// <summary>
+        /// 按鈕加上監聽事件
+        /// </summary>
         protected virtual void RegisterUIEvent()
         {
 
         }
-        //添加監聽遊戲事件
+        /// <summary>
+        /// 添加監聽遊戲事件
+        /// </summary>
         protected virtual void OnAddListener()
         {
 
         }
-        //移除遊戲事件
+        /// <summary>
+        /// 移除遊戲事件
+        /// </summary>
         protected virtual void OnRemoveListener()
         {
 
         }
-        //每次打開
+        /// <summary>
+        /// 每次打開
+        /// </summary>
         protected virtual void OnEnable()
         {
 
         }
-        //每次關閉
+        /// <summary>
+        /// 每次關閉
+        /// </summary>
         protected virtual void OnDisable()
         {
 
         }
-        //每禎更新
+        /// <summary>
+        /// 每禎更新
+        /// </summary>
+        /// <param name="deltaTime"></param>
         public virtual void Update(float deltaTime)
         {
 
         }
 
         //-----------------------WindowManager
-
+        /// <summary>
+        /// 打開窗體
+        /// </summary>
         public void Open()
         {
             if (transform == null)
@@ -76,6 +93,10 @@ namespace Game.View
                 OnAddListener(); //添加事件
             }
         }
+        /// <summary>
+        /// 關閉窗體
+        /// </summary>
+        /// <param name="isDestroy"></param>
         public void Close(bool isDestroy = false)
         {
             if (transform.gameObject.activeSelf == true)

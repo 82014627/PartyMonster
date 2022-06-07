@@ -7,39 +7,58 @@ using UnityEngine;
 public class EntityFSM 
 {
     public Transform transform;
-    public PlayerFSM fsm; //管理类
+    public PlayerFSM fsm; //管理類
 
-    //进入状态
-    public virtual void Enter() {
+    /// <summary>
+    /// 進入狀態
+    /// </summary>
+    public virtual void Enter() 
+    {
         AddListener();
     }
 
-    //状态更新中
-    public virtual void Update() { 
+    /// <summary>
+    /// 狀態更新
+    /// </summary>
+    public virtual void Update() 
+    { 
     
     }
-    //移動
+    /// <summary>
+    /// 移動
+    /// </summary>
     public virtual void FixedUpdate()
     {
 
     }
-    //退出状态
-    public virtual void Exit() {
+    /// <summary>
+    /// 退出狀態
+    /// </summary>
+    public virtual void Exit() 
+    {
         RemoveListener();
     }
 
-    //监听一些游戏事件
-    public virtual void AddListener() { 
+    /// <summary>
+    /// 增加監聽遊戲事件
+    /// </summary>
+    public virtual void AddListener() 
+    { 
     
     }
 
-    //移除掉监听的事件
+    /// <summary>
+    /// 移除監聽遊戲事件
+    /// </summary>
     public virtual void RemoveListener()
     {
 
     }
 
-    //處理每一禎的網路事件
+    /// <summary>
+    /// 處理網路事件
+    /// </summary>
+    /// <param name="s2cMSG"></param>
     public virtual void HandleCMD(BattleUserInputS2C s2cMSG)
     {
 

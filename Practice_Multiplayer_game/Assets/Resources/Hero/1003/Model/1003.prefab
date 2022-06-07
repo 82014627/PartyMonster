@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 1323101646283828032}
   m_Layer: 0
   m_Name: "\u5E95\u5EA7"
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1403995050664615202}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.059, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6699035305989494053}
@@ -167,8 +167,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.81045467, y: 0.08031745, z: 1}
-  m_Center: {x: 0.0063181915, y: -0.011495553, z: 0}
+  m_Size: {x: 0.81045467, y: 0.21336764, z: 1}
+  m_Center: {x: 0.0063181915, y: 0.05502954, z: 0}
 --- !u!1 &1824322053940410250
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,6 +676,7 @@ GameObject:
   - component: {fileID: 1553716358281272180}
   - component: {fileID: 5349551512176214650}
   - component: {fileID: 3933828019939480074}
+  - component: {fileID: -8119527975027063655}
   m_Layer: 0
   m_Name: 1003
   m_TagString: Player
@@ -748,6 +749,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
+--- !u!114 &-8119527975027063655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8445702280690346755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b18ba526f7a77be43ad1ca5570f37005, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSelf: 0
+  hud: {fileID: 0}
+  isCanJump: 0
+  isInvincible: 0
+  isDead: 0
+  HurtText: {fileID: 0}
+  skillManager: {fileID: 0}
+  animatorManager: {fileID: 0}
+  playerFSM: {fileID: 0}
+  inputCtrl: {fileID: 0}
 --- !u!1 &8458430522379637111
 GameObject:
   m_ObjectHideFlags: 0

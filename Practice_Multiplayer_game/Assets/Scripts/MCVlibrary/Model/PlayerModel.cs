@@ -11,6 +11,11 @@ namespace Assets.MCVlibrary.Model
     {
         public RolesInfo rolesInfo;
         public RoomInfo roomInfo;
+        /// <summary>
+        /// 確認是否為自己
+        /// </summary>
+        /// <param name="rolesID"></param>
+        /// <returns></returns>
         public bool CheckIsSelf(int rolesID)
         {
             return rolesInfo.RolesID == rolesID;

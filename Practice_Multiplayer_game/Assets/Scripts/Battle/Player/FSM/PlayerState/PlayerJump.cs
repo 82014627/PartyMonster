@@ -21,7 +21,7 @@ public class PlayerJump : EntityFSM
         base.Enter();
         GameObject.Find("BattleAudioManager").GetComponent<BattleAudioManager>().Jump();
         fsm.playerCtrl.animatorManager.Play(PlayerAnimationClip.jump);
-        fsm.rigidbody.AddForce(transform.up * 1800);
+        fsm.rigidbody.AddForce(transform.up * 300);
     }
 
     public override void Exit()

@@ -21,7 +21,7 @@ public class TeachWindow : BaseWindow
 
     public void Next()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().OKBtn();
+        AudioManager.Instance.OKBtn();
         if (i == 4)
         {
             Close();
@@ -37,7 +37,7 @@ public class TeachWindow : BaseWindow
     }
     public void Back()
     {
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().BackBtn();
+        AudioManager.Instance.BackBtn();
         int now = i - 1;
         if (now < 0)
         {

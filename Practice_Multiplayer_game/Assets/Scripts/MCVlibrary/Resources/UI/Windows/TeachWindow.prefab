@@ -1087,18 +1087,19 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 61
+    m_MaxSize: 88
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5E03\u4E01\u72D7\u56E0\u70BA\u6709BUG\u6240\u4EE5\u66AB\u6642\u95DC\u9589\u9078\u89D2\n\n\u56E0\u70BA\u6642\u9593\u95DC\u4FC2\u6240\u4EE5\u904A\u6232\u9084\u6709\u8A31\u591A\u5C0FBUG\n\n\u767C\u73FEBUG\u7684\u8A71\u53EF\u4EE5\u8DDF\u5DE5\u4F5C\u4EBA\u54E1\u53CD\u6620\n\n\u975E\u5E38\u4E0D\u597D\u610F\u601D\uFF0C\u656C\u8ACB\u898B\u8AD2"
+  m_Text: "\u904A\u6232\u8AAA\u660E\u7D50\u675F\n\n   \u958B\u59CB\u5927\u4E82\u9B25\u5427
+    ! "
 --- !u!1 &3148532718964407698
 GameObject:
   m_ObjectHideFlags: 0
